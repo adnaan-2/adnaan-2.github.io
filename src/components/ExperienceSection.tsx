@@ -2,32 +2,25 @@ import SectionReveal from "./SectionReveal";
 
 const experiences = [
   {
-    company: "TechCorp Inc.",
-    role: "Senior Software Engineer",
-    period: "2022 – Present",
+    company: "Creative Connect Advertising",
+    role: "Full-Stack Developer (Next + Django)",
+    period: "Jan 2026 – Present",
     description:
-      "Leading frontend architecture for a SaaS platform serving 100K+ users. Mentoring junior developers and establishing coding standards.",
+      "Developing full-stack features for the company's CRM and e-commerce platform. Working on both frontend UI/UX and backend logic. Implementing admin dashboard enhancements, product management, and order handling features.",
   },
   {
-    company: "StartupXYZ",
-    role: "Full Stack Developer",
-    period: "2020 – 2022",
+    company: "Osaid Travel & Tours",
+    role: "Fullstack Developer (MERN)",
+    period: "Mar 2025 – July 2025",
     description:
-      "Built and scaled a real-time collaboration tool from 0 to 50K users. Implemented microservices architecture and CI/CD pipelines.",
+      "Developed and deployed responsive business websites using the MERN stack. Integrated APIs for booking and analytics with secure authentication. Automated CI/CD pipeline via Vercel for seamless deployment.",
   },
   {
-    company: "DevAgency",
-    role: "Frontend Developer",
-    period: "2019 – 2020",
+    company: "COMSATS University Islamabad",
+    role: "Bachelor of Science in Software Engineering",
+    period: "Jan 2022 – Jan 2026",
     description:
-      "Developed responsive web applications for 15+ clients. Introduced component-driven development with React and Storybook.",
-  },
-  {
-    company: "University CS Lab",
-    role: "Research Assistant",
-    period: "2018 – 2019",
-    description:
-      "Conducted research on distributed systems and published 2 papers. Built tools for data visualization and analysis.",
+      "Completed Bachelor's degree in Software Engineering with focus on web development, software architecture, and modern programming practices.",
   },
 ];
 

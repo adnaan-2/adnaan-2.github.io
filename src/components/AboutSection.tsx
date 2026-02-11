@@ -2,10 +2,10 @@ import SectionReveal from "./SectionReveal";
 import { Code2, Zap, Layers, GitBranch } from "lucide-react";
 
 const stats = [
-  { label: "Years Experience", value: "5+" },
-  { label: "Projects Completed", value: "30+" },
-  { label: "Technologies", value: "20+" },
-  { label: "Contributions", value: "500+" },
+  { label: "Years Experience", value: "1+" },
+  { label: "Projects Completed", value: "10+" },
+  { label: "Technologies", value: "15+" },
+  { label: "Education", value: "BS SE" },
 ];
 
 const highlights = [
@@ -31,14 +31,14 @@ const AboutSection = () => (
               about.md
             </div>
             <p className="mb-4 leading-relaxed text-muted-foreground">
-              I'm a passionate Software Engineer with 5+ years of experience building web applications
-              that are fast, accessible, and delightful to use. I specialize in full-stack development
-              with modern JavaScript/TypeScript ecosystems.
+              Full stack developer with strong expertise in Next.js, React specializing in interactive 
+              web applications. I also have hands-on experience in backend development using Node.js, 
+              Express.js, Fast API, and cloud-based solutions.
             </p>
             <p className="leading-relaxed text-muted-foreground">
-              When I'm not coding, you'll find me contributing to open-source projects, writing technical
-              blog posts, or exploring new technologies. I believe in writing code that tells a story and
-              building products that make a difference.
+              I'm a graduate of COMSATS University Islamabad with a Bachelor's in Software Engineering. 
+              I'm passionate about building scalable applications and continuously learning new technologies 
+              to deliver elegant solutions.
             </p>
           </div>
 

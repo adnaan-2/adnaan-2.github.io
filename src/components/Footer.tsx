@@ -5,7 +5,7 @@ const Footer = () => (
         <span className="text-primary">$</span> Thanks for visiting • Built with React & TypeScript
       </p>
       <p className="mt-2 font-mono text-xs text-muted-foreground/60">
-        © {new Date().getFullYear()} Alex Johnson. All rights reserved.
+        © {new Date().getFullYear()} Adnan Khalil. All rights reserved.
       </p>
     </div>
   </footer>

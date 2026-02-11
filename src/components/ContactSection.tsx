@@ -69,21 +69,20 @@ const ContactSection = () => {
                 <Mail className="h-5 w-5 text-primary" />
                 <div>
                   <div className="font-mono text-sm text-foreground">Email</div>
-                  <div className="text-sm text-muted-foreground">alex@example.com</div>
+                  <div className="text-sm text-muted-foreground">adnanmughal0342@gmail.com</div>
                 </div>
               </div>
               <div className="flex items-center gap-3 rounded-lg border border-border bg-card p-4">
                 <MapPin className="h-5 w-5 text-primary" />
                 <div>
                   <div className="font-mono text-sm text-foreground">Location</div>
-                  <div className="text-sm text-muted-foreground">San Francisco, CA</div>
+                  <div className="text-sm text-muted-foreground">Islamabad, Pakistan</div>
                 </div>
               </div>
               <div className="flex gap-3 pt-4">
                 {[
-                  { icon: Github, href: "#", label: "GitHub" },
-                  { icon: Linkedin, href: "#", label: "LinkedIn" },
-                  { icon: Twitter, href: "#", label: "Twitter" },
+                  { icon: Github, href: "https://github.com/adnaan-2", label: "GitHub" },
+                  { icon: Linkedin, href: "https://linkedin.com/in/adnankhalil099/", label: "LinkedIn" },
                 ].map(social => (
                   <a
                     key={social.label}

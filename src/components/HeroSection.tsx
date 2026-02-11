@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { ArrowDown, Download, Code2 } from "lucide-react";
 import { Button } from "./ui/button";
 
-const titles = ["Software Engineer", "Full Stack Developer", "Problem Solver"];
+const titles = ["Software Engineer", "Full Stack Developer", "MERN Stack Developer"];
 
 const HeroSection = () => {
   const [text, setText] = useState("");
@@ -57,7 +57,7 @@ const HeroSection = () => {
                 <span className="text-cyan-400 dark:text-cyan-300">developer</span> = {"{"}
               </p>
               <p className="ml-4 text-muted-foreground">
-                name: <span className="text-green-400 dark:text-green-300">"Alex Johnson"</span>,
+                name: <span className="text-green-400 dark:text-green-300">"Adnan Khalil"</span>,
               </p>
               <p className="ml-4 text-muted-foreground">
                 role:{" "}
@@ -75,7 +75,7 @@ const HeroSection = () => {
           </div>
 
           <h1 className="mb-4 text-4xl font-bold tracking-tight text-foreground sm:text-6xl">
-            Hi, I'm <span className="text-primary">Alex Johnson</span>
+            Hi, I'm <span className="text-primary">Adnan Khalil</span>
           </h1>
           <p className="mb-8 font-mono text-lg text-muted-foreground">
             {">"} {text}
@@ -89,9 +89,11 @@ const HeroSection = () => {
                 View Projects
               </a>
             </Button>
-            <Button size="lg" variant="outline" className="gap-2 font-mono">
-              <Download className="h-4 w-4" />
-              Download CV
+            <Button size="lg" variant="outline" className="gap-2 font-mono" asChild>
+              <a href="/Adnan khalil Resume.pdf" download="Adnan Khalil Resume.pdf">
+                <Download className="h-4 w-4" />
+                Download CV
+              </a>
             </Button>
           </div>
         </motion.div>

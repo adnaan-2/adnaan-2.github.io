@@ -1,43 +1,113 @@
 import { useMemo } from "react";
 import SectionReveal from "./SectionReveal";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
+
+const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+// Seeded random for consistent results
+const seededRandom = (seed: number) => {
+  const x = Math.sin(seed) * 10000;
+  return x - Math.floor(x);
+};
 
 const generateContributions = () => {
-  const data: number[][] = [];
-  for (let w = 0; w < 52; w++) {
-    const week: number[] = [];
+  const data: { count: number; date: string }[][] = [];
+  const today = new Date();
+  const startDate = new Date(today);
+  startDate.setDate(startDate.getDate() - 364);
+  
+  const dayOfWeek = startDate.getDay();
+  startDate.setDate(startDate.getDate() - dayOfWeek);
+  
+  let totalCount = 0;
+  const targetTotal = 240;
+  const totalDays = 53 * 7;
+  
+  // Pre-calculate which days will have contributions (~40% fill rate)
+  const contributionDays: { week: number; day: number; count: number }[] = [];
+  let seed = 42;
+  
+  for (let w = 0; w < 53; w++) {
     for (let d = 0; d < 7; d++) {
-      week.push(Math.random() > 0.3 ? Math.floor(Math.random() * 10) : 0);
+      seed++;
+      const rand = seededRandom(seed);
+      if (rand < 0.40) { // 40% chance of contribution
+        let count = 1;
+        const intensityRand = seededRandom(seed + 1000);
+        if (intensityRand > 0.85) count = Math.floor(seededRandom(seed + 2000) * 4) + 4; // 4-7
+        else if (intensityRand > 0.6) count = Math.floor(seededRandom(seed + 2000) * 3) + 2; // 2-4
+        else count = 1;
+        
+        contributionDays.push({ week: w, day: d, count });
+        totalCount += count;
+      }
+    }
+  }
+  
+  // Adjust to match target (~240)
+  const scale = targetTotal / totalCount;
+  contributionDays.forEach(cd => {
+    cd.count = Math.max(1, Math.round(cd.count * scale));
+  });
+  
+  // Build the grid
+  for (let w = 0; w < 53; w++) {
+    const week: { count: number; date: string }[] = [];
+    for (let d = 0; d < 7; d++) {
+      const currentDate = new Date(startDate);
+      currentDate.setDate(startDate.getDate() + w * 7 + d);
+      
+      const contribution = contributionDays.find(cd => cd.week === w && cd.day === d);
+      
+      week.push({
+        count: contribution?.count || 0,
+        date: currentDate.toLocaleDateString("en-US", { 
+          weekday: "short", 
+          year: "numeric", 
+          month: "short", 
+          day: "numeric" 
+        }),
+      });
     }
     data.push(week);
   }
   return data;
 };
 
-const monthlyData = [
-  { month: "Jan", commits: 45 },
-  { month: "Feb", commits: 62 },
-  { month: "Mar", commits: 78 },
-  { month: "Apr", commits: 53 },
-  { month: "May", commits: 91 },
-  { month: "Jun", commits: 67 },
-  { month: "Jul", commits: 84 },
-  { month: "Aug", commits: 72 },
-  { month: "Sep", commits: 95 },
-  { month: "Oct", commits: 88 },
-  { month: "Nov", commits: 61 },
-  { month: "Dec", commits: 76 },
-];
-
 const getColor = (count: number) => {
-  if (count === 0) return "bg-secondary";
-  if (count < 3) return "bg-primary/30";
-  if (count < 6) return "bg-primary/60";
-  return "bg-primary";
+  if (count === 0) return "bg-[#161b22]";
+  if (count === 1) return "bg-[#0e4429]";
+  if (count <= 3) return "bg-[#006d32]";
+  if (count <= 5) return "bg-[#26a641]";
+  return "bg-[#39d353]";
+};
+
+const getMonthLabels = (contributions: { count: number; date: string }[][]) => {
+  const labels: { month: string; index: number }[] = [];
+  let lastMonth = -1;
+  
+  contributions.forEach((week, index) => {
+    const date = new Date(week[0].date);
+    const month = date.getMonth();
+    if (month !== lastMonth) {
+      labels.push({ month: months[month], index });
+      lastMonth = month;
+    }
+  });
+  
+  return labels;
+};
+
+const getTotalContributions = (contributions: { count: number; date: string }[][]) => {
+  return contributions.reduce((total, week) => 
+    total + week.reduce((weekTotal, day) => weekTotal + day.count, 0), 0
+  );
 };
 
 const GitHubStats = () => {
   const contributions = useMemo(generateContributions, []);
+  const monthLabels = useMemo(() => getMonthLabels(contributions), [contributions]);
+  const totalContributions = useMemo(() => getTotalContributions(contributions), [contributions]);
 
   return (
     <section className="px-6 py-24">
@@ -47,49 +117,78 @@ const GitHubStats = () => {
           <h2 className="mb-12 text-3xl font-bold text-foreground sm:text-4xl">Coding Stats</h2>
         </SectionReveal>
 
-        <div className="grid gap-8 lg:grid-cols-2">
-          <SectionReveal delay={0.1}>
-            <div className="rounded-xl border border-border bg-card p-6">
-              <h3 className="mb-4 font-mono text-sm text-muted-foreground">Contribution Graph</h3>
-              <div className="overflow-x-auto">
-                <div className="flex gap-[3px]">
-                  {contributions.map((week, wi) => (
-                    <div key={wi} className="flex flex-col gap-[3px]">
-                      {week.map((count, di) => (
-                        <div
-                          key={di}
-                          className={`h-3 w-3 rounded-sm ${getColor(count)}`}
-                          title={`${count} contributions`}
-                        />
+        <SectionReveal delay={0.1}>
+          <div className="flex justify-center">
+            <div className="inline-block rounded-xl border border-border bg-card p-4">
+              <h3 className="mb-3 font-mono text-sm text-muted-foreground">
+                {totalContributions} contributions in the last year
+              </h3>
+              
+              <div className="overflow-hidden">
+                <div className="relative">
+                  {/* Month labels */}
+                  <div className="mb-1 ml-8 flex">
+                    {monthLabels.map((label, i) => (
+                      <span
+                        key={i}
+                        className="absolute font-mono text-xs text-muted-foreground"
+                        style={{ left: `${label.index * 13 + 32}px` }}
+                      >
+                        {label.month}
+                      </span>
+                    ))}
+                  </div>
+                  
+                  <div className="h-5" />
+                  
+                  {/* Contribution grid with day labels */}
+                  <div className="flex items-start">
+                    {/* Day labels */}
+                    <div className="flex flex-col gap-[3px] pr-1 w-7">
+                      {days.map((day, i) => (
+                        <span 
+                          key={i} 
+                          className={`font-mono text-[10px] text-muted-foreground h-[10px] leading-[10px] ${
+                            i % 2 === 0 ? 'opacity-0' : ''
+                          }`}
+                        >
+                          {day}
+                        </span>
                       ))}
                     </div>
-                  ))}
+                    
+                    {/* Grid */}
+                    <div className="flex gap-[3px]">
+                      {contributions.map((week, wi) => (
+                        <div key={wi} className="flex flex-col gap-[3px]">
+                          {week.map((day, di) => (
+                            <div
+                              key={di}
+                              className={`h-[10px] w-[10px] rounded-sm ${getColor(day.count)} transition-all hover:ring-1 hover:ring-muted-foreground`}
+                              title={`${day.count} contributions on ${day.date}`}
+                            />
+                          ))}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  {/* Legend */}
+                  <div className="mt-2 flex items-center justify-end gap-1">
+                    <span className="font-mono text-[10px] text-muted-foreground mr-1">Less</span>
+                    {[0, 1, 3, 5, 7].map((level) => (
+                      <div
+                        key={level}
+                        className={`h-[10px] w-[10px] rounded-sm ${getColor(level)}`}
+                      />
+                    ))}
+                    <span className="font-mono text-[10px] text-muted-foreground ml-1">More</span>
+                  </div>
                 </div>
               </div>
             </div>
-          </SectionReveal>
-
-          <SectionReveal delay={0.2}>
-            <div className="rounded-xl border border-border bg-card p-6">
-              <h3 className="mb-4 font-mono text-sm text-muted-foreground">Monthly Commits</h3>
-              <ResponsiveContainer width="100%" height={230}>
-                <BarChart data={monthlyData}>
-                  <XAxis dataKey="month" tick={{ fontSize: 12 }} stroke="hsl(var(--muted-foreground))" />
-                  <YAxis tick={{ fontSize: 12 }} stroke="hsl(var(--muted-foreground))" />
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: "hsl(var(--card))",
-                      border: "1px solid hsl(var(--border))",
-                      borderRadius: "8px",
-                      fontSize: "12px",
-                    }}
-                  />
-                  <Bar dataKey="commits" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </SectionReveal>
-        </div>
+          </div>
+        </SectionReveal>
       </div>
     </section>
   );
