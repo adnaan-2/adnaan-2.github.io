@@ -9,9 +9,12 @@ import ExperienceSection from "@/components/ExperienceSection";
 import GitHubStats from "@/components/GitHubStats";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
-import { cn } from "@/lib/utils";
+import DotGrid from "@/components/DotGrid";
+import { useTheme } from "@/components/ThemeProvider";
 
 const Index = () => {
+  const { theme } = useTheme();
+
   /* ── Butter-smooth scroll with Lenis ── */
   useEffect(() => {
     const lenis = new Lenis({
@@ -38,16 +41,21 @@ const Index = () => {
 
   return (
   <div className="relative min-h-screen bg-background text-foreground">
-    {/* Global grid background */}
-    <div
-      className={cn(
-        "pointer-events-none fixed inset-0 z-0",
-        "[background-size:40px_40px]",
-        "[background-image:linear-gradient(to_right,hsl(var(--border)/0.35)_1px,transparent_1px),linear-gradient(to_bottom,hsl(var(--border)/0.35)_1px,transparent_1px)]",
-      )}
+    {/* Interactive dot grid background */}
+    <DotGrid
+      dotSize={3}
+      gap={22}
+      baseColor={theme === "dark" ? "#1e293b" : "#cbd5e1"}
+      activeColor={theme === "dark" ? "#0ea5e9" : "#0284c7"}
+      proximity={130}
+      speedTrigger={80}
+      shockRadius={220}
+      shockStrength={4}
+      resistance={0.85}
+      returnDuration={1.4}
     />
-    {/* Radial fade mask — softer so more grid is visible */}
-    <div className="pointer-events-none fixed inset-0 z-0 bg-background [mask-image:radial-gradient(ellipse_at_center,transparent_50%,black)]" />
+    {/* Radial fade at edges */}
+    <div className="pointer-events-none fixed inset-0 z-0 bg-background [mask-image:radial-gradient(ellipse_at_center,transparent_40%,black)]" />
 
     <Navbar />
     <main className="relative z-10">

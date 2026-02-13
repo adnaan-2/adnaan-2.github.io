@@ -1,5 +1,13 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef, Children, cloneElement, useMemo, type ReactElement } from "react";
 import { useTheme } from "./ThemeProvider";
+import {
+  motion,
+  useMotionValue,
+  useSpring,
+  useTransform,
+  AnimatePresence,
+  type MotionValue,
+} from "motion/react";
 import {
   Sun,
   Moon,
@@ -11,10 +19,10 @@ import {
   Users,
   LayoutGrid,
   Terminal,
-  Menu,
-  X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+
+/* ── Nav data ──────────────────────────────────────────── */
 
 const navLinks = [
   { label: "Home", href: "#hero", icon: Home, sectionId: "hero" },
@@ -27,12 +35,103 @@ const navLinks = [
 ];
 
 const SCROLL_OFFSET = 100;
+const SPRING = { mass: 0.1, stiffness: 150, damping: 12 };
+const BASE_SIZE = 40;
+const MAGNIFICATION = 60;
+const DISTANCE = 140;
+
+/* ── Dock primitives ───────────────────────────────────── */
+
+interface DockItemProps {
+  children: ReactElement | ReactElement[];
+  mouseX: MotionValue<number>;
+  onClick?: () => void;
+  className?: string;
+}
+
+function DockItem({ children, mouseX, onClick, className = "" }: DockItemProps) {
+  const ref = useRef<HTMLDivElement>(null);
+  const isHovered = useMotionValue(0);
+
+  const mouseDistance = useTransform(mouseX, (val) => {
+    const rect = ref.current?.getBoundingClientRect() ?? { x: 0, width: BASE_SIZE };
+    return val - rect.x - BASE_SIZE / 2;
+  });
+
+  const targetSize = useTransform(mouseDistance, [-DISTANCE, 0, DISTANCE], [BASE_SIZE, MAGNIFICATION, BASE_SIZE]);
+  const size = useSpring(targetSize, SPRING);
+
+  return (
+    <motion.div
+      ref={ref}
+      style={{ width: size, height: size }}
+      onHoverStart={() => isHovered.set(1)}
+      onHoverEnd={() => isHovered.set(0)}
+      onFocus={() => isHovered.set(1)}
+      onBlur={() => isHovered.set(0)}
+      onClick={onClick}
+      className={cn(
+        "relative inline-flex cursor-pointer items-center justify-center rounded-xl border border-border/40 bg-background/80 shadow-sm outline-none backdrop-blur-sm transition-colors",
+        "hover:border-primary/40 hover:bg-primary/10",
+        className,
+      )}
+      tabIndex={0}
+      role="button"
+    >
+      {Children.map(children, (child) =>
+        cloneElement(child as ReactElement<any>, { isHovered }),
+      )}
+    </motion.div>
+  );
+}
+
+function DockLabel({ children, isHovered }: { children: React.ReactNode; isHovered?: MotionValue<number> }) {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    if (!isHovered) return;
+    const unsub = isHovered.on("change", (v) => setVisible(v === 1));
+    return () => unsub();
+  }, [isHovered]);
+
+  return (
+    <AnimatePresence>
+      {visible && (
+        <motion.div
+          initial={{ opacity: 0, y: 0 }}
+          animate={{ opacity: 1, y: -10 }}
+          exit={{ opacity: 0, y: 0 }}
+          transition={{ duration: 0.15 }}
+          className="pointer-events-none absolute -top-8 left-1/2 z-50 whitespace-nowrap rounded-md border border-border/50 bg-card px-2.5 py-1 font-mono text-[10px] text-foreground shadow-lg backdrop-blur-sm"
+          style={{ x: "-50%" }}
+          role="tooltip"
+        >
+          {children}
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
+function DockIcon({ children }: { children: React.ReactNode; isHovered?: MotionValue<number> }) {
+  return <div className="flex items-center justify-center">{children}</div>;
+}
+
+/* ── Main Navbar ───────────────────────────────────────── */
 
 const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
-  const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("hero");
-  const [scrolled, setScrolled] = useState(false);
+  const mouseX = useMotionValue(Infinity);
+  const isHovered = useMotionValue(0);
+
+  const panelHeight = 56;
+  const maxHeight = useMemo(
+    () => Math.max(80, MAGNIFICATION + MAGNIFICATION / 2 + 4),
+    [],
+  );
+  const heightRow = useTransform(isHovered, [0, 1], [panelHeight, maxHeight]);
+  const height = useSpring(heightRow, SPRING);
 
   /* ── Track which section is in view ─────────────────────── */
   useEffect(() => {
@@ -57,188 +156,167 @@ const Navbar = () => {
     return () => observer.disconnect();
   }, []);
 
-  /* ── Compact navbar on scroll ───────────────────────────── */
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  /* ── Smooth-scroll handler (Lenis-aware) ────────────────── */
-  const handleNav = useCallback(
-    (e: React.MouseEvent<HTMLAnchorElement>, sectionId: string) => {
-      e.preventDefault();
+  /* ── Smooth-scroll handler ──────────────────────────────── */
+  const scrollTo = useCallback(
+    (sectionId: string) => {
       const target = document.getElementById(sectionId);
       if (!target) return;
-
       const lenis = (window as any).__lenis;
       if (lenis) {
         lenis.scrollTo(target, { offset: -SCROLL_OFFSET, duration: 1.2 });
       } else {
-        const top =
-          target.getBoundingClientRect().top + window.scrollY - SCROLL_OFFSET;
+        const top = target.getBoundingClientRect().top + window.scrollY - SCROLL_OFFSET;
         window.scrollTo({ top, behavior: "smooth" });
       }
-
-      setMobileOpen(false);
     },
     [],
   );
 
   return (
     <>
-      {/* ═══════════════ Desktop navbar ═══════════════ */}
-      <nav className="fixed top-5 left-1/2 z-50 hidden -translate-x-1/2 md:block">
-        <div
-          className={cn(
-            "flex items-center gap-1 rounded-full border bg-background/60 px-4 backdrop-blur-2xl transition-all duration-500",
-            scrolled ? "py-1.5" : "py-2",
-            // border & glow
-            "border-primary/20 ring-1 ring-primary/10",
-            "shadow-[0_0_20px_hsl(var(--primary)/0.10),0_0_60px_hsl(var(--primary)/0.03),inset_0_0_0_1px_rgba(255,255,255,0.06)]",
-            // hover
-            "hover:border-primary/35 hover:ring-primary/20",
-            "hover:shadow-[0_0_30px_hsl(var(--primary)/0.18),0_0_80px_hsl(var(--primary)/0.05),inset_0_0_0_1px_rgba(255,255,255,0.1)]",
-            // dark
-            "dark:border-primary/15 dark:bg-background/50",
-            "dark:shadow-[0_0_25px_hsl(var(--primary)/0.12),0_0_60px_hsl(var(--primary)/0.04),inset_0_0_0_1px_rgba(255,255,255,0.04)]",
-            "dark:hover:border-primary/30 dark:hover:shadow-[0_0_40px_hsl(var(--primary)/0.22),0_0_80px_hsl(var(--primary)/0.06)]",
-          )}
+      {/* ═══════════════ Desktop Dock Navbar ═══════════════ */}
+      <nav className="fixed bottom-4 left-1/2 z-50 hidden -translate-x-1/2 md:block">
+        <motion.div
+          style={{ height, scrollbarWidth: "none" }}
+          className="mx-2 flex items-end"
         >
-          {/* Logo */}
-          <a
-            href="#hero"
-            onClick={(e) => handleNav(e, "hero")}
+          <motion.div
+            onMouseMove={({ pageX }) => {
+              isHovered.set(1);
+              mouseX.set(pageX);
+            }}
+            onMouseLeave={() => {
+              isHovered.set(0);
+              mouseX.set(Infinity);
+            }}
             className={cn(
-              "mr-1 flex items-center justify-center rounded-full p-2.5 transition-all duration-200",
-              "text-foreground hover:bg-primary/10 hover:text-primary hover:scale-110",
-              activeSection === "hero" && "text-primary",
+              "flex items-end gap-2 rounded-2xl border bg-background/60 px-3 pb-2 backdrop-blur-2xl",
+              "border-primary/20 ring-1 ring-primary/10",
+              "shadow-[0_0_20px_hsl(var(--primary)/0.10),0_0_60px_hsl(var(--primary)/0.03),inset_0_0_0_1px_rgba(255,255,255,0.06)]",
+              "dark:border-primary/15 dark:bg-background/50",
+              "dark:shadow-[0_0_25px_hsl(var(--primary)/0.12),0_0_60px_hsl(var(--primary)/0.04),inset_0_0_0_1px_rgba(255,255,255,0.04)]",
             )}
-            aria-label="Home"
+            style={{ height: panelHeight }}
+            role="toolbar"
+            aria-label="Navigation dock"
           >
-            <Terminal className="h-5 w-5" />
-          </a>
+            {/* Logo */}
+            <DockItem mouseX={mouseX} onClick={() => scrollTo("hero")} className={activeSection === "hero" ? "border-primary/40 text-primary" : ""}>
+              <DockIcon>
+                <Terminal className="h-[18px] w-[18px]" />
+              </DockIcon>
+              <DockLabel>Home</DockLabel>
+            </DockItem>
 
-          <div className="mx-1 h-5 w-px bg-gradient-to-b from-transparent via-primary/25 to-transparent" />
+            {/* Divider */}
+            <div className="mx-0.5 mb-1 h-8 w-px self-end bg-gradient-to-b from-transparent via-primary/25 to-transparent" />
 
-          {/* Nav icons */}
+            {/* Nav items */}
+            {navLinks.slice(1).map((link) => {
+              const isActive = activeSection === link.sectionId;
+              return (
+                <DockItem
+                  key={link.sectionId}
+                  mouseX={mouseX}
+                  onClick={() => scrollTo(link.sectionId)}
+                  className={isActive ? "border-primary/40 bg-primary/15 text-primary" : "text-muted-foreground"}
+                >
+                  <DockIcon>
+                    <link.icon className="h-[18px] w-[18px]" />
+                  </DockIcon>
+                  <DockLabel>{link.label}</DockLabel>
+                </DockItem>
+              );
+            })}
+
+            {/* Divider */}
+            <div className="mx-0.5 mb-1 h-8 w-px self-end bg-gradient-to-b from-transparent via-primary/25 to-transparent" />
+
+            {/* Theme toggle */}
+            <DockItem mouseX={mouseX} onClick={toggleTheme} className="text-muted-foreground">
+              <DockIcon>
+                {theme === "dark" ? (
+                  <Sun className="h-[18px] w-[18px]" />
+                ) : (
+                  <Moon className="h-[18px] w-[18px]" />
+                )}
+              </DockIcon>
+              <DockLabel>{theme === "dark" ? "Light" : "Dark"}</DockLabel>
+            </DockItem>
+          </motion.div>
+        </motion.div>
+      </nav>
+
+      {/* ═══════════════ Mobile navbar ═══════════════ */}
+      <nav className="fixed bottom-2 left-1/2 z-50 -translate-x-1/2 md:hidden">
+        <div
+          onMouseMove={({ pageX }) => {
+            isHovered.set(1);
+            mouseX.set(pageX);
+          }}
+          onMouseLeave={() => {
+            isHovered.set(0);
+            mouseX.set(Infinity);
+          }}
+          className={cn(
+            "flex items-center gap-1.5 rounded-xl border bg-background/60 px-2 py-1.5 backdrop-blur-2xl overflow-x-auto scrollbar-hide max-w-[95vw]",
+            "border-primary/20 ring-1 ring-primary/10",
+            "shadow-[0_0_20px_hsl(var(--primary)/0.10),inset_0_0_0_1px_rgba(255,255,255,0.06)]",
+            "dark:border-primary/15 dark:bg-background/50",
+            "dark:shadow-[0_0_25px_hsl(var(--primary)/0.12),inset_0_0_0_1px_rgba(255,255,255,0.04)]",
+          )}
+          role="toolbar"
+          aria-label="Mobile navigation"
+        >
+          {/* Home/Logo */}
+          <button
+            onClick={() => scrollTo("hero")}
+            className={cn(
+              "flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg border border-border/40 bg-background/80 transition-colors",
+              activeSection === "hero" 
+                ? "border-primary/40 bg-primary/15 text-primary" 
+                : "text-muted-foreground hover:border-primary/40 hover:bg-primary/10"
+            )}
+          >
+            <Terminal className="h-4 w-4" />
+          </button>
+
+          {/* Divider */}
+          <div className="mx-0.5 h-6 w-px flex-shrink-0 bg-gradient-to-b from-transparent via-primary/25 to-transparent" />
+
+          {/* All nav items */}
           {navLinks.slice(1).map((link) => {
             const isActive = activeSection === link.sectionId;
             return (
-              <a
+              <button
                 key={link.sectionId}
-                href={link.href}
-                onClick={(e) => handleNav(e, link.sectionId)}
+                onClick={() => scrollTo(link.sectionId)}
                 className={cn(
-                  "group relative flex items-center justify-center rounded-full p-2.5 transition-all duration-200",
+                  "flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg border border-border/40 bg-background/80 transition-colors",
                   isActive
-                    ? "bg-primary/15 text-primary"
-                    : "text-muted-foreground hover:bg-primary/10 hover:text-primary",
-                  "hover:scale-110",
+                    ? "border-primary/40 bg-primary/15 text-primary"
+                    : "text-muted-foreground hover:border-primary/40 hover:bg-primary/10"
                 )}
-                aria-label={link.label}
               >
-                <link.icon className="h-[18px] w-[18px]" />
-
-                {/* Active dot */}
-                <span
-                  className={cn(
-                    "absolute -bottom-1 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-primary transition-all duration-300",
-                    isActive ? "scale-100 opacity-100" : "scale-0 opacity-0",
-                  )}
-                />
-
-                {/* Tooltip */}
-                <span className="pointer-events-none absolute -bottom-9 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md border border-border/50 bg-card px-2.5 py-1 font-mono text-[10px] text-foreground opacity-0 shadow-lg backdrop-blur-sm transition-all duration-200 group-hover:opacity-100 group-hover:-bottom-10">
-                  {link.label}
-                </span>
-              </a>
+                <link.icon className="h-4 w-4" />
+              </button>
             );
           })}
 
-          <div className="mx-1 h-5 w-px bg-gradient-to-b from-transparent via-primary/25 to-transparent" />
+          {/* Divider */}
+          <div className="mx-0.5 h-6 w-px flex-shrink-0 bg-gradient-to-b from-transparent via-primary/25 to-transparent" />
 
           {/* Theme toggle */}
           <button
             onClick={toggleTheme}
-            className="flex items-center justify-center rounded-full p-2.5 text-muted-foreground transition-all duration-200 hover:bg-primary/10 hover:text-primary hover:scale-110 hover:rotate-12"
-            aria-label="Toggle theme"
+            className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg border border-border/40 bg-background/80 text-muted-foreground transition-colors hover:border-primary/40 hover:bg-primary/10"
           >
             {theme === "dark" ? (
-              <Sun className="h-[18px] w-[18px]" />
+              <Sun className="h-4 w-4" />
             ) : (
-              <Moon className="h-[18px] w-[18px]" />
+              <Moon className="h-4 w-4" />
             )}
           </button>
-        </div>
-      </nav>
-
-      {/* ═══════════════ Mobile navbar ═══════════════ */}
-      <nav className="fixed top-4 left-1/2 z-50 -translate-x-1/2 md:hidden">
-        <div
-          className={cn(
-            "flex flex-col rounded-2xl border border-primary/20 bg-background/60 backdrop-blur-2xl transition-all duration-300",
-            "shadow-[0_0_20px_hsl(var(--primary)/0.10),inset_0_0_0_1px_rgba(255,255,255,0.06)] ring-1 ring-primary/10",
-            "dark:border-primary/15 dark:bg-background/50 dark:shadow-[0_0_25px_hsl(var(--primary)/0.12),inset_0_0_0_1px_rgba(255,255,255,0.04)] dark:ring-primary/10",
-            mobileOpen ? "w-[260px]" : "w-auto",
-          )}
-        >
-          <div className="flex items-center justify-between px-4 py-2.5">
-            <a
-              href="#hero"
-              onClick={(e) => handleNav(e, "hero")}
-              className="flex items-center gap-2 text-foreground"
-              aria-label="Home"
-            >
-              <Terminal className="h-5 w-5" />
-            </a>
-            <button
-              onClick={() => setMobileOpen(!mobileOpen)}
-              className="rounded-full p-2 text-muted-foreground transition-colors hover:bg-primary/10 hover:text-primary"
-            >
-              {mobileOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
-            </button>
-          </div>
-
-          {/* Animated dropdown */}
-          <div
-            className={cn(
-              "overflow-hidden transition-all duration-300 ease-in-out",
-              mobileOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0",
-            )}
-          >
-            <div className="flex flex-col gap-0.5 border-t border-border/30 px-3 py-2">
-              {navLinks.map((link) => {
-                const isActive = activeSection === link.sectionId;
-                return (
-                  <a
-                    key={link.sectionId}
-                    href={link.href}
-                    onClick={(e) => handleNav(e, link.sectionId)}
-                    className={cn(
-                      "flex items-center gap-3 rounded-xl px-3 py-2.5 font-mono text-sm transition-all duration-200",
-                      isActive
-                        ? "bg-primary/15 text-primary font-medium"
-                        : "text-muted-foreground hover:bg-primary/10 hover:text-primary",
-                    )}
-                  >
-                    <link.icon className="h-4 w-4" />
-                    {link.label}
-                    {isActive && (
-                      <span className="ml-auto h-1.5 w-1.5 rounded-full bg-primary" />
-                    )}
-                  </a>
-                );
-              })}
-              <button
-                onClick={toggleTheme}
-                className="flex items-center gap-3 rounded-xl px-3 py-2.5 font-mono text-sm text-muted-foreground transition-colors hover:bg-primary/10 hover:text-primary"
-              >
-                {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-                {theme === "dark" ? "Light Mode" : "Dark Mode"}
-              </button>
-            </div>
-          </div>
         </div>
       </nav>
     </>
