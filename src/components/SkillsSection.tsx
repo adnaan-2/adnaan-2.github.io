@@ -43,17 +43,17 @@ const categories = [
 ];
 
 const SkillsSection = () => (
-  <section id="skills" className="px-6 py-24">
+  <section id="skills" className="px-4 py-16 sm:px-6 sm:py-24">
     <div className="mx-auto max-w-6xl">
       <SectionReveal>
-        <div className="mb-4 font-mono text-sm text-primary">{"## Skills"}</div>
-        <h2 className="mb-12 text-3xl font-bold text-foreground sm:text-4xl">Technical Proficiency</h2>
+        <div className="mb-4 font-mono text-sm text-primary">Skills</div>
+        <h2 className="mb-8 text-2xl font-bold text-foreground sm:mb-12 sm:text-3xl md:text-4xl">Technical Proficiency</h2>
       </SectionReveal>
 
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="grid gap-4 sm:gap-6 md:grid-cols-2">
         {categories.map((cat, i) => (
           <SectionReveal key={cat.title} delay={i * 0.1}>
-            <div className="rounded-xl border border-border bg-card p-6">
+            <div className="rounded-xl border border-border/50 bg-card/80 p-4 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 sm:p-6">
               <div className="mb-4">
                 <Badge variant="outline" className="font-mono">
                   {cat.title}

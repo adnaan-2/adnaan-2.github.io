@@ -5,6 +5,19 @@ import { Button } from "./ui/button";
 
 const titles = ["Software Engineer", "Full Stack Developer", "MERN Stack Developer"];
 
+const smoothScrollTo = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+  e.preventDefault();
+  const target = document.getElementById(id);
+  if (!target) return;
+  const lenis = (window as any).__lenis;
+  if (lenis) {
+    lenis.scrollTo(target, { offset: -100, duration: 1.2 });
+  } else {
+    const top = target.getBoundingClientRect().top + window.scrollY - 100;
+    window.scrollTo({ top, behavior: "smooth" });
+  }
+};
+
 const HeroSection = () => {
   const [text, setText] = useState("");
   const [titleIndex, setTitleIndex] = useState(0);
@@ -36,22 +49,21 @@ const HeroSection = () => {
   }, [charIndex, isDeleting, titleIndex]);
 
   return (
-    <section className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 pt-20">
-      {/* Grid background */}
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,hsl(var(--border)/0.3)_1px,transparent_1px),linear-gradient(to_bottom,hsl(var(--border)/0.3)_1px,transparent_1px)] bg-[size:4rem_4rem]" />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,hsl(var(--primary)/0.08),transparent_70%)]" />
+    <section id="hero" className="relative flex min-h-screen items-center justify-center overflow-hidden px-4 pt-20 sm:px-6">
+      {/* Radial glow */}
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,hsl(var(--primary)/0.1),transparent_60%)]" />
 
       <div className="relative z-10 mx-auto max-w-4xl text-center">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
           {/* Terminal card */}
-          <div className="mx-auto mb-8 max-w-2xl overflow-hidden rounded-xl border border-border bg-card shadow-2xl shadow-primary/5">
-            <div className="flex items-center gap-2 border-b border-border px-4 py-3">
-              <div className="h-3 w-3 rounded-full bg-red-500/80" />
-              <div className="h-3 w-3 rounded-full bg-yellow-500/80" />
-              <div className="h-3 w-3 rounded-full bg-green-500/80" />
-              <span className="ml-2 font-mono text-xs text-muted-foreground">portfolio.tsx</span>
+          <div className="mx-auto mb-6 max-w-2xl overflow-hidden rounded-xl border border-border/50 bg-card/80 shadow-2xl shadow-primary/5 backdrop-blur-sm sm:mb-8">
+            <div className="flex items-center gap-2 border-b border-border px-3 py-2 sm:px-4 sm:py-3">
+              <div className="h-2.5 w-2.5 rounded-full bg-red-500/80 sm:h-3 sm:w-3" />
+              <div className="h-2.5 w-2.5 rounded-full bg-yellow-500/80 sm:h-3 sm:w-3" />
+              <div className="h-2.5 w-2.5 rounded-full bg-green-500/80 sm:h-3 sm:w-3" />
+              <span className="ml-2 font-mono text-[10px] text-muted-foreground sm:text-xs">portfolio.tsx</span>
             </div>
-            <div className="p-6 text-left font-mono text-sm leading-relaxed">
+            <div className="p-4 text-left font-mono text-xs leading-relaxed sm:p-6 sm:text-sm">
               <p className="text-muted-foreground">
                 <span className="text-primary">const</span>{" "}
                 <span className="text-cyan-400 dark:text-cyan-300">developer</span> = {"{"}
@@ -74,22 +86,22 @@ const HeroSection = () => {
             </div>
           </div>
 
-          <h1 className="mb-4 text-4xl font-bold tracking-tight text-foreground sm:text-6xl">
+          <h1 className="mb-3 text-2xl font-bold tracking-tight text-foreground sm:mb-4 sm:text-4xl md:text-6xl">
             Hi, I'm <span className="text-primary">Adnan Khalil</span>
           </h1>
-          <p className="mb-8 font-mono text-lg text-muted-foreground">
-            {">"} {text}
+          <p className="mb-6 font-mono text-sm text-muted-foreground sm:mb-8 sm:text-lg">
+            {">"}  {text}
             <span className="animate-pulse text-primary">_</span>
           </p>
 
-          <div className="flex flex-wrap items-center justify-center gap-4">
-            <Button size="lg" className="gap-2 font-mono" asChild>
-              <a href="#projects">
+          <div className="flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
+            <Button size="default" className="w-full gap-2 font-mono sm:w-auto sm:size-lg" asChild>
+              <a href="#projects" onClick={(e) => smoothScrollTo(e, "projects")}>
                 <Code2 className="h-4 w-4" />
                 View Projects
               </a>
             </Button>
-            <Button size="lg" variant="outline" className="gap-2 font-mono" asChild>
+            <Button size="default" variant="outline" className="w-full gap-2 font-mono sm:w-auto sm:size-lg" asChild>
               <a href="/Adnan khalil Resume.pdf" download="Adnan Khalil Resume.pdf">
                 <Download className="h-4 w-4" />
                 Download CV
@@ -99,7 +111,7 @@ const HeroSection = () => {
         </motion.div>
 
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }} className="mt-16">
-          <a href="#about" className="inline-block animate-bounce text-muted-foreground transition-colors hover:text-primary">
+          <a href="#about" onClick={(e) => smoothScrollTo(e, "about")} className="inline-block animate-bounce text-muted-foreground transition-colors hover:text-primary">
             <ArrowDown className="h-6 w-6" />
           </a>
         </motion.div>

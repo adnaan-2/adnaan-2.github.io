@@ -25,25 +25,25 @@ const experiences = [
 ];
 
 const ExperienceSection = () => (
-  <section id="experience" className="px-6 py-24">
+  <section id="experience" className="px-4 py-16 sm:px-6 sm:py-24">
     <div className="mx-auto max-w-4xl">
       <SectionReveal>
-        <div className="mb-4 font-mono text-sm text-primary">{"## Experience"}</div>
-        <h2 className="mb-12 text-3xl font-bold text-foreground sm:text-4xl">Career Timeline</h2>
+        <div className="mb-4 font-mono text-sm text-primary">Experience</div>
+        <h2 className="mb-8 text-2xl font-bold text-foreground sm:mb-12 sm:text-3xl md:text-4xl">Career Timeline</h2>
       </SectionReveal>
 
       <div className="relative">
-        <div className="absolute left-4 top-0 h-full w-px bg-border md:left-1/2" />
+        <div className="absolute left-3 top-0 h-full w-px bg-border sm:left-4 md:left-1/2" />
 
-        <div className="space-y-12">
+        <div className="space-y-8 sm:space-y-12">
           {experiences.map((exp, i) => (
             <SectionReveal key={exp.company} delay={i * 0.1}>
               <div
                 className={`relative flex flex-col md:flex-row ${i % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"}`}
               >
-                <div className="absolute left-4 top-6 z-10 h-3 w-3 -translate-x-1/2 rounded-full border-2 border-primary bg-background md:left-1/2" />
-                <div className={`ml-10 md:ml-0 md:w-1/2 ${i % 2 === 0 ? "md:pr-12 md:text-right" : "md:pl-12"}`}>
-                  <div className="rounded-xl border border-border bg-card p-5 transition-all hover:border-primary/30">
+                <div className="absolute left-3 top-6 z-10 h-2.5 w-2.5 -translate-x-1/2 rounded-full border-2 border-primary bg-background sm:left-4 sm:h-3 sm:w-3 md:left-1/2" />
+                <div className={`ml-8 sm:ml-10 md:ml-0 md:w-1/2 ${i % 2 === 0 ? "md:pr-12 md:text-right" : "md:pl-12"}`}>
+                  <div className="rounded-xl border border-border/50 bg-card/80 p-4 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 sm:p-5">
                     <div className="mb-1 font-mono text-xs text-primary">{exp.period}</div>
                     <h3 className="font-semibold text-foreground">{exp.role}</h3>
                     <div className="mb-2 font-mono text-sm text-muted-foreground">{exp.company}</div>

@@ -1,17 +1,13 @@
-import { useState } from "react";
 import SectionReveal from "./SectionReveal";
 import { Badge } from "./ui/badge";
-import { Button } from "./ui/button";
 import { ExternalLink, Github } from "lucide-react";
-
-const filters = ["All", "Frontend", "Backend", "Full Stack"];
 
 const projects = [
   {
     title: "ShareDocs",
     description: "Real-time collaborative document editor enabling users to create and share unique documents with secure, no-login access using unique session-based sharing links.",
     tech: ["Next.js", "Node.js", "Supabase", "TypeScript"],
-    category: "Full Stack",
+    image: "/share.png",
     github: "https://github.com/adnaan-2/share",
     live: "https://share.gameidea.org/",
   },
@@ -19,7 +15,7 @@ const projects = [
     title: "Creative connect advertising CRM",
     description: "A complete CRM solution for managing advertising campaigns, client interactions, analytics, and complete work operations of employees and the ordering system.",
     tech: ["React", "Next.js", "Django", "SQL","Docker"],
-    category: "Full Stack",
+    image: "/crm.png",
     github: "https://github.com/adnaan-2",
     live: "https://app.crm.click2print.store/admin/login",
   },
@@ -27,7 +23,7 @@ const projects = [
     title: "News & Blogging Platform",
     description: "Secure admin dashboard for content moderation, approvals, and analytics with category-based filtering, comment system, and image uploads using Cloudinary.",
     tech: ["Next.js", "MongoDB", "NextAuth", "Cloudinary"],
-    category: "Full Stack",
+    image: "/blogging.png",
     github: "https://github.com/adnaan-2/interview-prep",
     live: "https://interview-prep-ten-rose.vercel.app/",
   },
@@ -35,56 +31,52 @@ const projects = [
     title: "Business Portfolio Website",
     description: "Modern, responsive portfolio showcasing projects with smooth animations, dark mode support, and optimized performance. Built with Next.js and Tailwind CSS.",
     tech: ["Next.js", "React", "Tailwind CSS", "TypeScript"],
-    category: "Frontend",
+    image: "/portfolio.png",
     github: "https://github.com/adnaan-2",
     live: "https://osaidtraveltours.com/",
   },
   {
     title: "Content Flow FYP",
-    description: "Modern, responsive portfolio showcasing projects with smooth animations, dark mode support, and optimized performance. Built with Next.js and Tailwind CSS.",
-    tech: ["Next.js", "React", "Tailwind CSS", "TypeScript"],
-    category: "Frontend",
+    description: "A single application that will manage the content scheduling and posting on all social media platforms (Facebook, Instagram, LinkedIn, Twitter). It will also have the feature of generating the content using AI",
+    tech: ["Next.js", "MERN", "Vercel"],
+    image: "/content flow.png",
     github: "https://github.com/adnaan-2",
     live: "https://osaidtraveltours.com/",
+  },
+  {
+    title: "Content Generation",
+    description: "A single application that generate photo or video content using AI for all social media platforms or just for fun. i made it just to generate some nice stuff for time pass and for an interview they gave me a task",
+    tech: ["Next.js", "MERN", "Vercel"],
+    image: "/content.png",
+    github: "https://github.com/adnaan-2/content-generation",
+    live: "https://content-generation-beige.vercel.app/",
   },
 ];
 
 const ProjectsSection = () => {
-  const [active, setActive] = useState("All");
-  const filtered = active === "All" ? projects : projects.filter(p => p.category === active);
-
   return (
-    <section id="projects" className="px-6 py-24">
+    <section id="projects" className="px-4 py-16 sm:px-6 sm:py-24">
       <div className="mx-auto max-w-6xl">
         <SectionReveal>
-          <div className="mb-4 font-mono text-sm text-primary">{"## Projects"}</div>
-          <h2 className="mb-8 text-3xl font-bold text-foreground sm:text-4xl">Featured Work</h2>
-          <div className="mb-8 flex flex-wrap gap-2">
-            {filters.map(f => (
-              <Button
-                key={f}
-                variant={active === f ? "default" : "outline"}
-                size="sm"
-                className="font-mono"
-                onClick={() => setActive(f)}
-              >
-                {f}
-              </Button>
-            ))}
-          </div>
+          <div className="mb-4 font-mono text-sm text-primary">Projects</div>
+          <h2 className="mb-8 text-2xl font-bold text-foreground sm:mb-12 sm:text-3xl md:text-4xl">Featured Work</h2>
         </SectionReveal>
 
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((project, i) => (
+        <div className="grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {projects.map((project, i) => (
             <SectionReveal key={project.title} delay={i * 0.05}>
-              <div className="group relative overflow-hidden rounded-xl border border-border bg-card transition-all hover:border-primary/50 hover:shadow-xl hover:shadow-primary/5">
-                <div className="flex h-40 items-center justify-center bg-secondary/50 font-mono text-sm text-muted-foreground">
-                  {"<Screenshot />"}
+              <div className="group relative overflow-hidden rounded-xl border border-border/50 bg-card/80 backdrop-blur-sm transition-all duration-300 hover:-translate-y-2 hover:border-primary/50 hover:shadow-xl hover:shadow-primary/10">
+                <div className="h-32 overflow-hidden sm:h-40">
+                  <img 
+                    src={project.image} 
+                    alt={project.title}
+                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
                 </div>
-                <div className="p-5">
-                  <h3 className="mb-2 font-semibold text-foreground">{project.title}</h3>
-                  <p className="mb-4 text-sm leading-relaxed text-muted-foreground">{project.description}</p>
-                  <div className="mb-4 flex flex-wrap gap-1.5">
+                <div className="p-4 sm:p-5">
+                  <h3 className="mb-2 text-sm font-semibold text-foreground sm:text-base">{project.title}</h3>
+                  <p className="mb-3 text-xs leading-relaxed text-muted-foreground sm:mb-4 sm:text-sm">{project.description}</p>
+                  <div className="mb-3 flex flex-wrap gap-1 sm:mb-4 sm:gap-1.5">
                     {project.tech.map(t => (
                       <Badge key={t} variant="secondary" className="font-mono text-xs">
                         {t}

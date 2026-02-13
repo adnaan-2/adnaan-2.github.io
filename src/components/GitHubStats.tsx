@@ -110,28 +110,28 @@ const GitHubStats = () => {
   const totalContributions = useMemo(() => getTotalContributions(contributions), [contributions]);
 
   return (
-    <section className="px-6 py-24">
+    <section id="stats" className="px-4 py-16 sm:px-6 sm:py-24">
       <div className="mx-auto max-w-6xl">
         <SectionReveal>
-          <div className="mb-4 font-mono text-sm text-primary">{"## Activity"}</div>
-          <h2 className="mb-12 text-3xl font-bold text-foreground sm:text-4xl">Coding Stats</h2>
+          <div className="mb-4 font-mono text-sm text-primary">Activity</div>
+          <h2 className="mb-8 text-2xl font-bold text-foreground sm:mb-12 sm:text-3xl md:text-4xl">Coding Stats</h2>
         </SectionReveal>
 
         <SectionReveal delay={0.1}>
           <div className="flex justify-center">
-            <div className="inline-block rounded-xl border border-border bg-card p-4">
-              <h3 className="mb-3 font-mono text-sm text-muted-foreground">
+            <div className="w-full max-w-full overflow-x-auto rounded-xl border border-border/50 bg-card/80 p-3 backdrop-blur-sm transition-all duration-300 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 sm:w-auto sm:p-4">
+              <h3 className="mb-3 font-mono text-xs text-muted-foreground sm:text-sm">
                 {totalContributions} contributions in the last year
               </h3>
               
-              <div className="overflow-hidden">
-                <div className="relative">
+              <div className="overflow-x-auto pb-2">
+                <div className="relative min-w-[720px]">
                   {/* Month labels */}
                   <div className="mb-1 ml-8 flex">
                     {monthLabels.map((label, i) => (
                       <span
                         key={i}
-                        className="absolute font-mono text-xs text-muted-foreground"
+                        className="absolute font-mono text-[10px] text-muted-foreground sm:text-xs"
                         style={{ left: `${label.index * 13 + 32}px` }}
                       >
                         {label.month}
