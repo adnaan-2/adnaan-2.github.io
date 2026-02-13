@@ -125,6 +125,9 @@ const ContactSection = () => {
                   <a
                     key={social.label}
                     href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={social.label}
                     className="rounded-lg border border-border/50 bg-card/80 p-3 text-muted-foreground backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:text-primary hover:shadow-lg hover:shadow-primary/10"
                   >
                     <social.icon className="h-5 w-5" />
