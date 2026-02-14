@@ -5,24 +5,44 @@ import { Button } from "./ui/button";
 
 const titles = ["Software Engineer", "Full Stack Developer", "MERN Stack Developer"];
 
-const smoothScrollTo = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
-  e.preventDefault();
-  const target = document.getElementById(id);
-  if (!target) return;
-  const lenis = (window as any).__lenis;
-  if (lenis) {
-    lenis.scrollTo(target, { offset: -100, duration: 1.2 });
-  } else {
-    const top = target.getBoundingClientRect().top + window.scrollY - 100;
-    window.scrollTo({ top, behavior: "smooth" });
-  }
-};
-
 const HeroSection = () => {
   const [text, setText] = useState("");
   const [titleIndex, setTitleIndex] = useState(0);
   const [charIndex, setCharIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
+
+  const smoothScrollTo = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    e.preventDefault();
+    const target = document.getElementById(id);
+    if (!target) return;
+    const lenis = (window as any).__lenis;
+    if (lenis) {
+      lenis.scrollTo(target, { offset: -100, duration: 1.2 });
+    } else {
+      const top = target.getBoundingClientRect().top + window.scrollY - 100;
+      window.scrollTo({ top, behavior: "smooth" });
+    }
+  };
+
+  const handleDownloadCV = async () => {
+    try {
+      const response = await fetch('/Adnan khalil Resume.pdf');
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = url;
+      a.download = 'Adnan Khalil Resume.pdf';
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (error) {
+      console.error('Download failed:', error);
+      // Fallback to direct link
+      window.open('/Adnan khalil Resume.pdf', '_blank');
+    }
+  };
 
   useEffect(() => {
     const current = titles[titleIndex];
@@ -101,11 +121,9 @@ const HeroSection = () => {
                 View Projects
               </a>
             </Button>
-            <Button size="default" variant="outline" className="w-full gap-2 font-mono sm:w-auto sm:size-lg" asChild>
-              <a href="/Adnan khalil Resume.pdf" download="Adnan Khalil Resume.pdf">
-                <Download className="h-4 w-4" />
-                Download CV
-              </a>
+            <Button size="default" variant="outline" className="w-full gap-2 font-mono sm:w-auto sm:size-lg" onClick={handleDownloadCV}>
+              <Download className="h-4 w-4" />
+              Download CV
             </Button>
           </div>
         </motion.div>
