@@ -31,14 +31,14 @@ const AboutSection = () => (
               about.md
             </div>
             <p className="mb-4 leading-relaxed text-muted-foreground">
-              Full stack developer with strong expertise in Next.js, React specializing in interactive 
-              web applications. I also have hands-on experience in backend development using Node.js, 
-              Express.js, Fast API, and cloud-based solutions.
+              Results-driven Full Stack Developer with 2 years of professional experience building and
+              shipping production-grade web applications. Specialized in React, Next.js, Node.js, and
+              Django, with hands-on delivery across CRM platforms, e-commerce systems, and AI-integrated tools.
             </p>
             <p className="leading-relaxed text-muted-foreground">
-              I'm a graduate of COMSATS University Islamabad with a Bachelor's in Software Engineering. 
-              I'm passionate about building scalable applications and continuously learning new technologies 
-              to deliver elegant solutions.
+              Proven ability to own features end-to-end — from architecture to deployment — in fast-paced
+              agile environments. Passionate about building scalable, maintainable solutions and continuously
+              learning new technologies.
             </p>
           </div>
 

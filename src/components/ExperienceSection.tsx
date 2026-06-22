@@ -2,25 +2,25 @@ import SectionReveal from "./SectionReveal";
 
 const experiences = [
   {
-    company: "Creative Connect Advertising",
-    role: "Full-Stack Developer (Next + Django)",
-    period: "Jan 2026 – Present",
+    company: "Creative Connect Advertising LLC",
+    role: "Full-Stack Developer (Next.js + Django)",
+    period: "Jan 2026 – May 2026",
     description:
-      "Developing full-stack features for the company's CRM and e-commerce platform. Working on both frontend UI/UX and backend logic. Implementing admin dashboard enhancements, product management, and order handling features.",
+      "Built and shipped full-stack features for a live CRM and e-commerce platform serving real clients. Implemented admin dashboard enhancements, product management workflows, and end-to-end order handling using Django and PostgreSQL.",
   },
   {
     company: "Osaid Travel & Tours",
-    role: "Fullstack Developer (MERN)",
-    period: "Mar 2025 – July 2025",
+    role: "Junior Web Developer (MERN Stack)",
+    period: "Jan 2025 – Dec 2025",
     description:
-      "Developed and deployed responsive business websites using the MERN stack. Integrated APIs for booking and analytics with secure authentication. Automated CI/CD pipeline via Vercel for seamless deployment.",
+      "Developed and deployed responsive business websites using MongoDB, Express.js, React, and Node.js. Integrated third-party APIs for booking and analytics and implemented JWT-based authentication. Automated CI/CD with Vercel.",
   },
   {
     company: "COMSATS University Islamabad",
     role: "Bachelor of Science in Software Engineering",
     period: "Jan 2022 – Jan 2026",
     description:
-      "Completed Bachelor's degree in Software Engineering with focus on web development, software architecture, and modern programming practices.",
+      "Bachelor's degree in Software Engineering with focus on web development, software architecture, and modern programming practices.",
   },
 ];
 

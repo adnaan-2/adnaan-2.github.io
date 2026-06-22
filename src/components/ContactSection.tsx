@@ -3,7 +3,7 @@ import SectionReveal from "./SectionReveal";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
-import { Mail, MapPin, Github, Linkedin, Instagram, Facebook, Send } from "lucide-react";
+import { Mail, MapPin, Github, Linkedin, Instagram, Facebook, Send, Phone } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 // Web3Forms access key - Get yours free at https://web3forms.com
@@ -108,6 +108,14 @@ const ContactSection = () => {
                   <div className="text-sm text-muted-foreground">adnanmughal0342@gmail.com</div>
                 </div>
               </div>
+              <div className="flex items-center gap-3 rounded-lg border border-border/50 bg-card/80 p-4 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5">
+                <Phone className="h-5 w-5 text-primary" />
+                <div>
+                  <div className="font-mono text-sm text-foreground">Phone</div>
+                  <div className="text-sm text-muted-foreground">0342-1986817</div>
+                </div>
+              </div>
+
               <div className="flex items-center gap-3 rounded-lg border border-border/50 bg-card/80 p-4 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5">
                 <MapPin className="h-5 w-5 text-primary" />
                 <div>

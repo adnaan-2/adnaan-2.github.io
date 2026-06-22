@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowDown, Download, Code2 } from "lucide-react";
+import { ArrowDown, Download, Code2, Mail, Phone } from "lucide-react";
 import { Button } from "./ui/button";
 
-const titles = ["Software Engineer", "Full Stack Developer", "MERN Stack Developer"];
+  const titles = ["Software Engineer", "Full Stack Developer", "MERN Stack Developer"];
 
 const HeroSection = () => {
   const [text, setText] = useState("");
@@ -109,10 +109,22 @@ const HeroSection = () => {
           <h1 className="mb-3 text-2xl font-bold tracking-tight text-foreground sm:mb-4 sm:text-4xl md:text-6xl">
             Hi, I'm <span className="text-primary">Adnan Khalil</span>
           </h1>
+          <p className="mb-2 font-mono text-sm text-muted-foreground sm:text-lg">
+            Full Stack Developer | React & Next.js | Node.js & Python | MongoDB & PostgreSQL
+          </p>
           <p className="mb-6 font-mono text-sm text-muted-foreground sm:mb-8 sm:text-lg">
             {">"}  {text}
             <span className="animate-pulse text-primary">_</span>
           </p>
+
+          <div className="mb-6 flex flex-col items-center justify-center gap-2 text-sm text-muted-foreground sm:flex-row sm:gap-4">
+            <a href="mailto:adnanmughal0342@gmail.com" className="inline-flex items-center gap-2">
+              <Mail className="h-4 w-4 text-primary" /> adnanmughal0342@gmail.com
+            </a>
+            <a href="tel:03421986817" className="inline-flex items-center gap-2">
+              <Phone className="h-4 w-4 text-primary" /> 0342-1986817
+            </a>
+          </div>
 
           <div className="flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
             <Button size="default" className="w-full gap-2 font-mono sm:w-auto sm:size-lg" asChild>
