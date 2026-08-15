@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { ArrowDown, Download, Code2, Mail, Phone } from "lucide-react";
 import { Button } from "./ui/button";
 
-  const titles = ["Software Engineer", "Full Stack Developer", "MERN Stack Developer"];
+  const titles = ["Software Engineer", "Full Stack Developer", "React/Next.js & Flutter Developer", "Node.js & Django Developer", "DevOps & CI/CD Engineer"];
 
 const HeroSection = () => {
   const [text, setText] = useState("");
@@ -110,7 +110,7 @@ const HeroSection = () => {
             Hi, I'm <span className="text-primary">Adnan Khalil</span>
           </h1>
           <p className="mb-2 font-mono text-sm text-muted-foreground sm:text-lg">
-            Full Stack Developer | React & Next.js | Node.js & Python | MongoDB & PostgreSQL
+            Full Stack Developer | React/Next.js & Flutter | Node.js & Django | DevOps & CI/CD
           </p>
           <p className="mb-6 font-mono text-sm text-muted-foreground sm:mb-8 sm:text-lg">
             {">"}  {text}

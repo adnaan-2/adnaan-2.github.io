@@ -2,9 +2,9 @@ import SectionReveal from "./SectionReveal";
 import { Code2, Zap, Layers, GitBranch } from "lucide-react";
 
 const stats = [
-  { label: "Years Experience", value: "1+" },
+  { label: "Years Experience", value: "2+" },
   { label: "Projects Completed", value: "10+" },
-  { label: "Technologies", value: "15+" },
+  { label: "Technologies", value: "20+" },
   { label: "Education", value: "BS SE" },
 ];
 

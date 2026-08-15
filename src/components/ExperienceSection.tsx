@@ -2,18 +2,25 @@ import SectionReveal from "./SectionReveal";
 
 const experiences = [
   {
+    company: "Tab on Tech Solution",
+    role: "Full-Stack Developer (Hydrogen + Oxygen)",
+    period: "June 2026 – Current",
+    description:
+      "Built and deployed headless Shopify storefronts (Hydrogen + Oxygen) averaging 200+ daily active users and $8,000+ in average sales per store. Integrated Shopify Storefront API/GraphQL for product, cart, and checkout flows; improved load speed and Core Web Vitals.",
+  },
+  {
     company: "Creative Connect Advertising LLC",
     role: "Full-Stack Developer (Next.js + Django)",
     period: "Jan 2026 – May 2026",
     description:
-      "Built and shipped full-stack features for a live CRM and e-commerce platform serving real clients. Implemented admin dashboard enhancements, product management workflows, and end-to-end order handling using Django and PostgreSQL.",
+      "Built and shipped full-stack features for a live CRM and e-commerce platform serving 100+ real customers. Designed and developed a complete website for a printing company handling frontend and backend. Implemented admin dashboard enhancements, product management workflows, and end-to-end order handling systems using Django and PostgreSQL.",
   },
   {
     company: "Osaid Travel & Tours",
     role: "Junior Web Developer (MERN Stack)",
-    period: "Jan 2025 – Dec 2025",
+    period: "Jan 2025 – Nov 2025",
     description:
-      "Developed and deployed responsive business websites using MongoDB, Express.js, React, and Node.js. Integrated third-party APIs for booking and analytics and implemented JWT-based authentication. Automated CI/CD with Vercel.",
+      "Developed and deployed responsive business websites using the MERN stack, serving 50+ users. Integrated third-party APIs for booking and analytics with secure JWT-based authentication. Automated CI/CD pipeline via Vercel, reducing deployment time and eliminating manual release steps by 50%.",
   },
   {
     company: "COMSATS University Islamabad",

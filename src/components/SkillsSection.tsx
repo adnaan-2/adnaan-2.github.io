@@ -3,41 +3,39 @@ import { Badge } from "./ui/badge";
 
 const categories = [
   {
-    title: "Frontend",
+    title: "Languages & Frameworks",
     skills: [
-      { name: "React", level: 92 },
-      { name: "Next.js", level: 90 },
-      { name: "TypeScript", level: 88 },
-      { name: "Tailwind CSS", level: 90 },
-      { name: "Three.js", level: 70 },
+      { name: "JavaScript / TypeScript", level: 92 },
+      { name: "React.js / Next.js", level: 95 },
+      { name: "Flutter & Dart", level: 85 },
+      { name: "Node.js & Express.js", level: 90 },
+      { name: "Python & Django", level: 80 },
     ],
   },
   {
-    title: "Backend",
+    title: "Databases & Commerce",
     skills: [
-      { name: "Node.js", level: 88 },
-      { name: "Express.js", level: 85 },
-      { name: "Django", level: 75 },
-      { name: "Socket.io", level: 80 },
-      { name: "Fast API", level: 70 },
+      { name: "PostgreSQL & MySQL", level: 85 },
+      { name: "MongoDB", level: 88 },
+      { name: "Shopify (Hydrogen/Storefront)", level: 90 },
+      { name: "GraphQL", level: 85 },
     ],
   },
   {
-    title: "Databases",
+    title: "DevOps & Automation",
     skills: [
-      { name: "MongoDB", level: 85 },
-      { name: "SQL", level: 80 },
-      { name: "Supabase", level: 82 },
-      { name: "Firebase", level: 75 },
+      { name: "Docker & AWS", level: 80 },
+      { name: "CI/CD & GitHub Actions", level: 85 },
+      { name: "Vercel & Git", level: 92 },
+      { name: "Zapier & N8N", level: 88 },
     ],
   },
   {
-    title: "DevOps & Tools",
+    title: "Management & Tools",
     skills: [
-      { name: "Docker", level: 78 },
-      { name: "Git", level: 90 },
-      { name: "AWS", level: 72 },
-      { name: "Vercel", level: 85 },
+      { name: "Jira / Agile / Scrum", level: 90 },
+      { name: "BRD / SRS Documentation", level: 85 },
+      { name: "WordPress & Wix", level: 80 },
     ],
   },
 ];
