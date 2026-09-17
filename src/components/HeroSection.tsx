@@ -82,16 +82,6 @@ const HeroSection = () => {
       <div className="relative z-10 mx-auto max-w-4xl text-center">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
           
-          {/* Availability pill */}
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3.5 py-1.5 backdrop-blur-md">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
-            </span>
-            <span className="font-mono text-xs font-medium text-emerald-400">
-              Open to Full-Time Roles & Freelance Projects
-            </span>
-          </div>
 
           {/* Terminal card */}
           <div className="mx-auto mb-6 max-w-2xl overflow-hidden rounded-xl border border-border/50 bg-card/80 shadow-2xl shadow-primary/5 backdrop-blur-sm sm:mb-8">
