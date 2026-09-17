@@ -67,7 +67,10 @@ const ContactSection = () => {
       <div className="mx-auto max-w-4xl">
         <SectionReveal>
           <div className="mb-4 font-mono text-sm text-primary">Contact</div>
-          <h2 className="mb-8 text-2xl font-bold text-foreground sm:mb-12 sm:text-3xl md:text-4xl">Get In Touch</h2>
+          <h2 className="mb-3 text-2xl font-bold text-foreground sm:text-3xl md:text-4xl">Let's Connect</h2>
+          <p className="mb-8 max-w-xl text-sm leading-relaxed text-muted-foreground sm:mb-12">
+            Open to full-time roles and freelance projects in Full-Stack Software Engineering and Headless Shopify Development. Reach out to discuss your storefront, web application, or automation needs!
+          </p>
         </SectionReveal>
 
         <div className="grid gap-6 sm:gap-8 lg:grid-cols-2">

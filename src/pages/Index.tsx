@@ -3,6 +3,7 @@ import Lenis from "lenis";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import AboutSection from "@/components/AboutSection";
+import ServicesSection from "@/components/ServicesSection";
 import SkillsSection from "@/components/SkillsSection";
 import ProjectsSection from "@/components/ProjectsSection";
 import ExperienceSection from "@/components/ExperienceSection";
@@ -61,6 +62,7 @@ const Index = () => {
     <main className="relative z-10">
       <HeroSection />
       <AboutSection />
+      <ServicesSection />
       <ExperienceSection />
       <ProjectsSection />
       <SkillsSection />

@@ -19,6 +19,7 @@ import {
   Users,
   LayoutGrid,
   Terminal,
+  ShoppingBag,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -27,6 +28,7 @@ import { cn } from "@/lib/utils";
 const navLinks = [
   { label: "Home", href: "#hero", icon: Home, sectionId: "hero" },
   { label: "About", href: "#about", icon: User, sectionId: "about" },
+  { label: "Solutions", href: "#services", icon: ShoppingBag, sectionId: "services" },
   { label: "Experience", href: "#experience", icon: Briefcase, sectionId: "experience" },
   { label: "Projects", href: "#projects", icon: Code2, sectionId: "projects" },
   { label: "Skills", href: "#skills", icon: Users, sectionId: "skills" },

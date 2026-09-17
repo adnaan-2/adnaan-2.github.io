@@ -3,39 +3,44 @@ import { Badge } from "./ui/badge";
 
 const categories = [
   {
-    title: "Languages & Frameworks",
+    title: "Commerce & Headless Architecture",
     skills: [
-      { name: "JavaScript / TypeScript", level: 92 },
-      { name: "React.js / Next.js", level: 95 },
-      { name: "Flutter & Dart", level: 85 },
+      { name: "Shopify Hydrogen & Oxygen", level: 95 },
+      { name: "Storefront API & GraphQL", level: 92 },
+      { name: "Custom Shopify Store Dev & Liquid", level: 95 },
+      { name: "Headless Commerce & Remix", level: 90 },
+      { name: "GEO & Technical SEO", level: 88 },
+      { name: "Conversion Rate Optimization (CRO)", level: 90 },
+    ],
+  },
+  {
+    title: "Frontend Engineering",
+    skills: [
+      { name: "React.js & Next.js", level: 95 },
+      { name: "TypeScript", level: 92 },
+      { name: "Tailwind CSS", level: 95 },
+      { name: "Remix & Liquid", level: 90 },
+      { name: "Flutter & Dart", level: 82 },
+    ],
+  },
+  {
+    title: "Backend & API Systems",
+    skills: [
       { name: "Node.js & Express.js", level: 90 },
-      { name: "Python & Django", level: 80 },
+      { name: "Python & FastAPI", level: 88 },
+      { name: "REST & GraphQL APIs", level: 92 },
+      { name: "PostgreSQL & MySQL", level: 86 },
+      { name: "MongoDB & Supabase", level: 88 },
     ],
   },
   {
-    title: "Databases & Commerce",
+    title: "Automation, AI & DevOps",
     skills: [
-      { name: "PostgreSQL & MySQL", level: 85 },
-      { name: "MongoDB", level: 88 },
-      { name: "Shopify (Hydrogen/Storefront)", level: 90 },
-      { name: "GraphQL", level: 85 },
-    ],
-  },
-  {
-    title: "DevOps & Automation",
-    skills: [
-      { name: "Docker & AWS", level: 80 },
-      { name: "CI/CD & GitHub Actions", level: 85 },
-      { name: "Vercel & Git", level: 92 },
-      { name: "Zapier & N8N", level: 88 },
-    ],
-  },
-  {
-    title: "Management & Tools",
-    skills: [
-      { name: "Jira / Agile / Scrum", level: 90 },
-      { name: "BRD / SRS Documentation", level: 85 },
-      { name: "WordPress & Wix", level: 80 },
+      { name: "n8n & Zapier Automation", level: 92 },
+      { name: "Custom Third-Party AI APIs", level: 90 },
+      { name: "CI/CD & GitHub Actions", level: 88 },
+      { name: "Docker & AWS", level: 82 },
+      { name: "Vercel & Git Workflows", level: 95 },
     ],
   },
 ];
@@ -44,7 +49,7 @@ const SkillsSection = () => (
   <section id="skills" className="px-4 py-16 sm:px-6 sm:py-24">
     <div className="mx-auto max-w-6xl">
       <SectionReveal>
-        <div className="mb-4 font-mono text-sm text-primary">Skills</div>
+        <div className="mb-4 font-mono text-sm text-primary">Technical SEO & Tech Stack</div>
         <h2 className="mb-8 text-2xl font-bold text-foreground sm:mb-12 sm:text-3xl md:text-4xl">Technical Proficiency</h2>
       </SectionReveal>
 
@@ -53,7 +58,7 @@ const SkillsSection = () => (
           <SectionReveal key={cat.title} delay={i * 0.1}>
             <div className="rounded-xl border border-border/50 bg-card/80 p-4 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 sm:p-6">
               <div className="mb-4">
-                <Badge variant="outline" className="font-mono">
+                <Badge variant="outline" className="font-mono text-xs text-primary border-primary/30">
                   {cat.title}
                 </Badge>
               </div>
@@ -82,3 +87,4 @@ const SkillsSection = () => (
 );
 
 export default SkillsSection;
+
