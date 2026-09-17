@@ -22,7 +22,7 @@ const highlights = [
   {
     icon: Zap,
     title: "Performance",
-    category: "Speed & Core Web Vitals",
+    category: "Speed & Web Vitals",
     features: [
       "Shopify Hydrogen, Oxygen & Remix edge hosting",
       "Sub-second page loading & asset optimization",

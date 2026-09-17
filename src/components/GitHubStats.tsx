@@ -1,194 +1,220 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import SectionReveal from "./SectionReveal";
+import { Github, ExternalLink } from "lucide-react";
+import { Badge } from "./ui/badge";
 
 const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-// Seeded random for consistent results
-const seededRandom = (seed: number) => {
-  const x = Math.sin(seed) * 10000;
-  return x - Math.floor(x);
-};
-
-const generateContributions = () => {
-  const data: { count: number; date: string }[][] = [];
+// Generate realistic developer commit trajectory (~300+ total contributions)
+const generateRealisticContributions = () => {
+  const weeks: { date: Date; count: number; dateStr: string }[][] = [];
   const today = new Date();
   const startDate = new Date(today);
   startDate.setDate(startDate.getDate() - 364);
-  
   const dayOfWeek = startDate.getDay();
   startDate.setDate(startDate.getDate() - dayOfWeek);
-  
+
   let totalCount = 0;
-  const targetTotal = 240;
-  const totalDays = 53 * 7;
-  
-  // Pre-calculate which days will have contributions (~40% fill rate)
-  const contributionDays: { week: number; day: number; count: number }[] = [];
-  let seed = 42;
-  
+  let seed = 1369;
+  const pseudoRand = () => {
+    seed = (seed * 9301 + 49297) % 233280;
+    return seed / 233280;
+  };
+
   for (let w = 0; w < 53; w++) {
+    const week: { date: Date; count: number; dateStr: string }[] = [];
     for (let d = 0; d < 7; d++) {
-      seed++;
-      const rand = seededRandom(seed);
-      if (rand < 0.40) { // 40% chance of contribution
-        let count = 1;
-        const intensityRand = seededRandom(seed + 1000);
-        if (intensityRand > 0.85) count = Math.floor(seededRandom(seed + 2000) * 4) + 4; // 4-7
-        else if (intensityRand > 0.6) count = Math.floor(seededRandom(seed + 2000) * 3) + 2; // 2-4
-        else count = 1;
-        
-        contributionDays.push({ week: w, day: d, count });
-        totalCount += count;
+      const currDate = new Date(startDate);
+      currDate.setDate(startDate.getDate() + (w * 7 + d));
+
+      const isWeekend = d === 0 || d === 6;
+      const rand = pseudoRand();
+      let count = 0;
+
+      if (isWeekend) {
+        if (rand > 0.88) count = 1;
+      } else {
+        if (rand > 0.58) {
+          if (rand > 0.92) count = Math.floor(rand * 3) + 4; // 4-6 commits
+          else if (rand > 0.80) count = Math.floor(rand * 2) + 2; // 2-3 commits
+          else count = 1; // 1 commit
+        }
       }
-    }
-  }
-  
-  // Adjust to match target (~240)
-  const scale = targetTotal / totalCount;
-  contributionDays.forEach(cd => {
-    cd.count = Math.max(1, Math.round(cd.count * scale));
-  });
-  
-  // Build the grid
-  for (let w = 0; w < 53; w++) {
-    const week: { count: number; date: string }[] = [];
-    for (let d = 0; d < 7; d++) {
-      const currentDate = new Date(startDate);
-      currentDate.setDate(startDate.getDate() + w * 7 + d);
-      
-      const contribution = contributionDays.find(cd => cd.week === w && cd.day === d);
-      
+
+      totalCount += count;
       week.push({
-        count: contribution?.count || 0,
-        date: currentDate.toLocaleDateString("en-US", { 
-          weekday: "short", 
-          year: "numeric", 
-          month: "short", 
-          day: "numeric" 
+        date: currDate,
+        count,
+        dateStr: currDate.toLocaleDateString("en-US", {
+          weekday: "short",
+          month: "short",
+          day: "numeric",
+          year: "numeric",
         }),
       });
     }
-    data.push(week);
+    weeks.push(week);
   }
-  return data;
+  return { weeks, totalCount };
 };
 
-const getColor = (count: number) => {
-  if (count === 0) return "bg-[#161b22]";
-  if (count === 1) return "bg-[#0e4429]";
-  if (count <= 3) return "bg-[#006d32]";
-  if (count <= 5) return "bg-[#26a641]";
-  return "bg-[#39d353]";
-};
-
-const getMonthLabels = (contributions: { count: number; date: string }[][]) => {
-  const labels: { month: string; index: number }[] = [];
-  let lastMonth = -1;
-  
-  contributions.forEach((week, index) => {
-    const date = new Date(week[0].date);
-    const month = date.getMonth();
-    if (month !== lastMonth) {
-      labels.push({ month: months[month], index });
-      lastMonth = month;
-    }
-  });
-  
-  return labels;
-};
-
-const getTotalContributions = (contributions: { count: number; date: string }[][]) => {
-  return contributions.reduce((total, week) => 
-    total + week.reduce((weekTotal, day) => weekTotal + day.count, 0), 0
-  );
+// Authentic GitHub contribution colors
+const getCellBg = (count: number) => {
+  if (count === 0) return "bg-muted/30 dark:bg-[#161b22] border border-border/10";
+  if (count <= 2) return "bg-[#9be9a8] dark:bg-[#0e4429]";
+  if (count <= 5) return "bg-[#40c463] dark:bg-[#006d32]";
+  if (count <= 8) return "bg-[#30a14e] dark:bg-[#26a641]";
+  return "bg-[#216e39] dark:bg-[#39d353]";
 };
 
 const GitHubStats = () => {
-  const contributions = useMemo(generateContributions, []);
-  const monthLabels = useMemo(() => getMonthLabels(contributions), [contributions]);
-  const totalContributions = useMemo(() => getTotalContributions(contributions), [contributions]);
+  const { weeks, totalCount } = useMemo(generateRealisticContributions, []);
+  const [hoveredDay, setHoveredDay] = useState<{ dateStr: string; count: number } | null>(null);
+
+  // Accurately align month labels over grid columns
+  const monthLabels = useMemo(() => {
+    const labels: { month: string; weekIndex: number }[] = [];
+    let lastMonth = -1;
+
+    weeks.forEach((week, weekIndex) => {
+      const firstDayOfWeek = week[0].date;
+      const monthIndex = firstDayOfWeek.getMonth();
+      if (monthIndex !== lastMonth) {
+        if (labels.length === 0 || weekIndex - labels[labels.length - 1].weekIndex >= 3) {
+          labels.push({ month: months[monthIndex], weekIndex });
+          lastMonth = monthIndex;
+        }
+      }
+    });
+    return labels;
+  }, [weeks]);
 
   return (
     <section id="stats" className="px-4 py-16 sm:px-6 sm:py-24">
-      <div className="mx-auto max-w-6xl">
-        <SectionReveal>
-          <div className="mb-4 font-mono text-sm text-primary">Activity</div>
-          <h2 className="mb-8 text-2xl font-bold text-foreground sm:mb-12 sm:text-3xl md:text-4xl">Coding Stats</h2>
+      <div className="mx-auto max-w-6xl flex flex-col items-center">
+        <SectionReveal className="w-full text-left">
+          <div className="mb-4 font-mono text-sm text-primary flex items-center gap-2">
+            <Github className="h-4 w-4" /> Activity & Contribution Graph
+          </div>
+          <h2 className="mb-8 text-2xl font-bold text-foreground sm:mb-12 sm:text-3xl md:text-4xl">
+            GitHub Activity
+          </h2>
         </SectionReveal>
 
-        <SectionReveal delay={0.1}>
-          <div className="flex justify-center">
-            <div className="w-full max-w-full overflow-x-auto rounded-xl border border-border/50 bg-card/80 p-3 backdrop-blur-sm transition-all duration-300 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 sm:w-auto sm:p-4">
-              <h3 className="mb-3 font-mono text-xs text-muted-foreground sm:text-sm">
-                {totalContributions} contributions in the last year
-              </h3>
-              
-              <div className="overflow-x-auto pb-2">
-                <div className="relative min-w-[720px]">
-                  {/* Month labels */}
-                  <div className="mb-1 ml-8 flex">
-                    {monthLabels.map((label, i) => (
-                      <span
-                        key={i}
-                        className="absolute font-mono text-[10px] text-muted-foreground sm:text-xs"
-                        style={{ left: `${label.index * 13 + 32}px` }}
-                      >
-                        {label.month}
-                      </span>
-                    ))}
+        {/* Outer Box Matched to Content Width */}
+        <SectionReveal delay={0.1} className="w-full flex justify-center">
+          <div className="w-fit max-w-full overflow-hidden rounded-xl border border-border/50 bg-card/80 p-4 sm:p-6 backdrop-blur-sm shadow-xl shadow-primary/5">
+            
+            {/* Header Info */}
+            <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between border-b border-border/40 pb-4">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-primary/30 bg-primary/10 text-primary">
+                  <Github className="h-5 w-5" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h3 className="font-mono text-base font-bold text-foreground">adnaan-2</h3>
+                    <Badge variant="outline" className="font-mono text-[10px] border-emerald-500/40 text-emerald-400 bg-emerald-500/10">
+                      Active
+                    </Badge>
                   </div>
+                  <p className="font-mono text-xs text-muted-foreground">
+                    <strong className="text-primary">{totalCount}</strong> contributions in the last year
+                  </p>
+                </div>
+              </div>
+
+              <a
+                href="https://github.com/adnaan-2"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 rounded-lg border border-border/60 bg-secondary/80 px-3 py-1.5 font-mono text-xs text-foreground transition-all hover:border-primary/50 hover:bg-primary/10 hover:text-primary"
+              >
+                <Github className="h-3.5 w-3.5" />
+                @adnaan-2
+                <ExternalLink className="h-3 w-3" />
+              </a>
+            </div>
+
+            {/* Heatmap Grid fitted to content with scrollbar completely removed */}
+            <div className="overflow-x-auto scrollbar-hide [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden pb-1">
+              <div className="w-fit select-none">
+                
+                {/* Month Labels Header */}
+                <div className="relative mb-2 h-4 pl-8">
+                  {monthLabels.map((m) => (
+                    <span
+                      key={`${m.month}-${m.weekIndex}`}
+                      className="absolute font-mono text-xs text-muted-foreground"
+                      style={{ left: `${m.weekIndex * 13 + 32}px` }}
+                    >
+                      {m.month}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Day Labels + Heatmap Grid */}
+                <div className="flex items-start">
                   
-                  <div className="h-5" />
-                  
-                  {/* Contribution grid with day labels */}
-                  <div className="flex items-start">
-                    {/* Day labels */}
-                    <div className="flex flex-col gap-[3px] pr-1 w-7">
-                      {days.map((day, i) => (
-                        <span 
-                          key={i} 
-                          className={`font-mono text-[10px] text-muted-foreground h-[10px] leading-[10px] ${
-                            i % 2 === 0 ? 'opacity-0' : ''
-                          }`}
-                        >
-                          {day}
-                        </span>
-                      ))}
-                    </div>
-                    
-                    {/* Grid */}
-                    <div className="flex gap-[3px]">
-                      {contributions.map((week, wi) => (
-                        <div key={wi} className="flex flex-col gap-[3px]">
-                          {week.map((day, di) => (
-                            <div
-                              key={di}
-                              className={`h-[10px] w-[10px] rounded-sm ${getColor(day.count)} transition-all hover:ring-1 hover:ring-muted-foreground`}
-                              title={`${day.count} contributions on ${day.date}`}
-                            />
-                          ))}
-                        </div>
-                      ))}
-                    </div>
+                  {/* Day Labels Column */}
+                  <div className="flex flex-col gap-[3px] pr-2 font-mono text-[10px] text-muted-foreground pt-[1px]">
+                    <span className="h-[10px] leading-[10px] opacity-0">Sun</span>
+                    <span className="h-[10px] leading-[10px]">Mon</span>
+                    <span className="h-[10px] leading-[10px] opacity-0">Tue</span>
+                    <span className="h-[10px] leading-[10px]">Wed</span>
+                    <span className="h-[10px] leading-[10px] opacity-0">Thu</span>
+                    <span className="h-[10px] leading-[10px]">Fri</span>
+                    <span className="h-[10px] leading-[10px] opacity-0">Sat</span>
                   </div>
-                  
-                  {/* Legend */}
-                  <div className="mt-2 flex items-center justify-end gap-1">
-                    <span className="font-mono text-[10px] text-muted-foreground mr-1">Less</span>
-                    {[0, 1, 3, 5, 7].map((level) => (
-                      <div
-                        key={level}
-                        className={`h-[10px] w-[10px] rounded-sm ${getColor(level)}`}
-                      />
+
+                  {/* 53 Weeks Grid */}
+                  <div className="flex gap-[3px]">
+                    {weeks.map((week, wi) => (
+                      <div key={wi} className="flex flex-col gap-[3px]">
+                        {week.map((day, di) => (
+                          <div
+                            key={di}
+                            onMouseEnter={() => setHoveredDay({ dateStr: day.dateStr, count: day.count })}
+                            onMouseLeave={() => setHoveredDay(null)}
+                            className={`h-[10px] w-[10px] rounded-[2px] ${getCellBg(
+                              day.count
+                            )} transition-all duration-150 hover:scale-125 hover:ring-2 hover:ring-primary/60 cursor-pointer`}
+                            title={`${day.count} contributions on ${day.dateStr}`}
+                          />
+                        ))}
+                      </div>
                     ))}
-                    <span className="font-mono text-[10px] text-muted-foreground ml-1">More</span>
                   </div>
                 </div>
+
+                {/* Footer Legend & Hover Tooltip */}
+                <div className="mt-4 flex flex-col items-center justify-between gap-2 border-t border-border/40 pt-3 sm:flex-row">
+                  <div className="font-mono text-xs text-muted-foreground h-4">
+                    {hoveredDay ? (
+                      <span className="text-foreground">
+                        <strong className="text-primary">{hoveredDay.count}</strong> contributions on {hoveredDay.dateStr}
+                      </span>
+                    ) : (
+                      <span>Hover over a cell to view contribution activity</span>
+                    )}
+                  </div>
+
+                  <div className="flex items-center gap-1.5 font-mono text-xs text-muted-foreground">
+                    <span>Less</span>
+                    <div className="h-[10px] w-[10px] rounded-[2px] bg-muted/30 dark:bg-[#161b22] border border-border/10" />
+                    <div className="h-[10px] w-[10px] rounded-[2px] bg-[#9be9a8] dark:bg-[#0e4429]" />
+                    <div className="h-[10px] w-[10px] rounded-[2px] bg-[#40c463] dark:bg-[#006d32]" />
+                    <div className="h-[10px] w-[10px] rounded-[2px] bg-[#30a14e] dark:bg-[#26a641]" />
+                    <div className="h-[10px] w-[10px] rounded-[2px] bg-[#216e39] dark:bg-[#39d353]" />
+                    <span>More</span>
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>
         </SectionReveal>
+
       </div>
     </section>
   );
