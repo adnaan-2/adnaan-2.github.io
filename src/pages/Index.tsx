@@ -8,6 +8,7 @@ import SkillsSection from "@/components/SkillsSection";
 import ProjectsSection from "@/components/ProjectsSection";
 import ExperienceSection from "@/components/ExperienceSection";
 import GitHubStats from "@/components/GitHubStats";
+import FAQSection from "@/components/FAQSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 import DotGrid from "@/components/DotGrid";
@@ -67,6 +68,7 @@ const Index = () => {
       <ProjectsSection />
       <SkillsSection />
       <GitHubStats />
+      <FAQSection />
       <ContactSection />
     </main>
     <Footer />

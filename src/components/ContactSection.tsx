@@ -76,26 +76,47 @@ const ContactSection = () => {
         <div className="grid gap-6 sm:gap-8 lg:grid-cols-2">
           <SectionReveal delay={0.1}>
             <form onSubmit={handleSubmit} className="space-y-4">
-              <Input
-                placeholder="Your Name"
-                className="font-mono bg-card"
-                value={form.name}
-                onChange={e => setForm({ ...form, name: e.target.value })}
-              />
-              <Input
-                type="email"
-                placeholder="your@email.com"
-                className="font-mono bg-card"
-                value={form.email}
-                onChange={e => setForm({ ...form, email: e.target.value })}
-              />
-              <Textarea
-                placeholder="Your message..."
-                className="min-h-[120px] font-mono bg-card"
-                value={form.message}
-                onChange={e => setForm({ ...form, message: e.target.value })}
-              />
-              <Button type="submit" className="w-full gap-2 font-mono" disabled={sending}>
+              <div>
+                <label htmlFor="contact-name" className="sr-only">Your Name</label>
+                <Input
+                  id="contact-name"
+                  name="name"
+                  aria-label="Your Name"
+                  placeholder="Your Name"
+                  className="font-mono bg-card"
+                  value={form.name}
+                  onChange={e => setForm({ ...form, name: e.target.value })}
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="contact-email" className="sr-only">Your Email Address</label>
+                <Input
+                  id="contact-email"
+                  name="email"
+                  type="email"
+                  aria-label="Your Email Address"
+                  placeholder="your@email.com"
+                  className="font-mono bg-card"
+                  value={form.email}
+                  onChange={e => setForm({ ...form, email: e.target.value })}
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="contact-message" className="sr-only">Your Message</label>
+                <Textarea
+                  id="contact-message"
+                  name="message"
+                  aria-label="Your Message"
+                  placeholder="Your message..."
+                  className="min-h-[120px] font-mono bg-card"
+                  value={form.message}
+                  onChange={e => setForm({ ...form, message: e.target.value })}
+                  required
+                />
+              </div>
+              <Button type="submit" className="w-full gap-2 font-mono" disabled={sending} aria-label="Send Message">
                 <Send className="h-4 w-4" />
                 {sending ? "Sending..." : "Send Message"}
               </Button>

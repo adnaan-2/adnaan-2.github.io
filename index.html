@@ -46,52 +46,128 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
     <link rel="manifest" href="/favicon/site.webmanifest" />
 
-    <!-- ═══════ Fonts ═══════ -->
+    <!-- ═══════ Fonts Preload & Style ═══════ -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" />
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- ═══════ JSON-LD Structured Data ═══════ -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Adnan Khalil",
-      "url": "https://adnaan-2.github.io",
-      "image": "https://adnaan-2.github.io/og-image.png",
-      "jobTitle": "Full-Stack Software Engineer & Headless Shopify Developer",
-      "description": "Full-Stack Software Engineer (COMSATS University) specializing in Headless Shopify, Custom Store Development, Scalable Web Apps, and AI Automations.",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Islamabad",
-        "addressCountry": "PK"
-      },
-      "email": "adnanmughal0342@gmail.com",
-      "alumniOf": {
-        "@type": "CollegeOrUniversity",
-        "name": "COMSATS University Islamabad"
-      },
-      "knowsAbout": ["Headless Shopify", "Shopify Hydrogen", "Oxygen Edge Hosting", "Remix", "Storefront API", "Liquid Themes", "Custom Store Development", "GEO", "Technical SEO", "CRO", "Next.js", "React", "TypeScript", "Node.js", "FastAPI", "n8n", "Zapier"],
-      "sameAs": [
-        "https://github.com/adnaan-2",
-        "https://linkedin.com/in/adnankhalil099/",
-        "https://www.instagram.com/a.d.n.aa.n/",
-        "https://www.facebook.com/adnan817/"
+      "@graph": [
+        {
+          "@type": "Person",
+          "@id": "https://adnaan-2.github.io/#person",
+          "name": "Adnan Khalil",
+          "url": "https://adnaan-2.github.io",
+          "image": "https://adnaan-2.github.io/og-image.png",
+          "jobTitle": "Full-Stack Software Engineer & Headless Shopify Developer",
+          "description": "Full-Stack Software Engineer (COMSATS University) with 2+ years exp. Specializing in Headless Shopify (Hydrogen, Oxygen, Remix), Custom Store Development (Liquid, Storefront API), Scalable Web Apps, and AI Automations.",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Islamabad",
+            "addressCountry": "PK"
+          },
+          "email": "adnanmughal0342@gmail.com",
+          "telephone": "+923421986817",
+          "alumniOf": {
+            "@type": "CollegeOrUniversity",
+            "name": "COMSATS University Islamabad"
+          },
+          "knowsAbout": [
+            "Headless Shopify",
+            "Shopify Hydrogen",
+            "Oxygen Edge Hosting",
+            "Remix",
+            "Shopify Storefront API",
+            "Liquid Themes",
+            "Custom Store Development",
+            "Generative Engine Optimization (GEO)",
+            "Technical SEO",
+            "Conversion Rate Optimization (CRO)",
+            "React.js",
+            "Next.js",
+            "TypeScript",
+            "Node.js",
+            "FastAPI",
+            "n8n",
+            "Zapier"
+          ],
+          "sameAs": [
+            "https://github.com/adnaan-2",
+            "https://linkedin.com/in/adnankhalil099/",
+            "https://www.instagram.com/a.d.n.aa.n/",
+            "https://www.facebook.com/adnan817/"
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://adnaan-2.github.io/#website",
+          "name": "Adnan Khalil – Full-Stack & Headless Shopify Developer",
+          "url": "https://adnaan-2.github.io",
+          "description": "Portfolio of Adnan Khalil – Full-Stack Software Engineer & Headless Shopify Developer from Islamabad, Pakistan",
+          "author": {
+            "@id": "https://adnaan-2.github.io/#person"
+          }
+        },
+        {
+          "@type": "ProfilePage",
+          "@id": "https://adnaan-2.github.io/#profilepage",
+          "url": "https://adnaan-2.github.io",
+          "name": "Adnan Khalil - Developer Portfolio",
+          "mainEntity": {
+            "@id": "https://adnaan-2.github.io/#person"
+          }
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://adnaan-2.github.io/#faqpage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Who is Adnan Khalil?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Adnan Khalil is a Full-Stack Software Engineer (COMSATS University) with 2+ years of production experience specializing in Headless Shopify development, custom e-commerce scaling, full-stack web applications (React.js, Next.js, Node.js, FastAPI), and business AI automation."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What services does Adnan Khalil offer?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Adnan offers Headless Shopify storefront engineering (Hydrogen, Oxygen, Remix), Custom Shopify Theme (Liquid) & Storefront API (GraphQL) development, Full-Stack Web Application & MVP development (React, Next.js, Node.js, FastAPI), Technical SEO, Generative Engine Optimization (GEO), and Business Process Automation (n8n, Zapier, AI APIs)."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What technologies does Adnan Khalil specialize in?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Adnan specializes in Shopify Hydrogen, Oxygen edge hosting, Remix, Storefront API (GraphQL), Liquid, React.js, Next.js, TypeScript, Node.js, Express.js, FastAPI, Python, PostgreSQL, MySQL, MongoDB, n8n, Zapier, and third-party AI APIs (Gemini & OpenAI)."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Does Adnan Khalil build Headless Shopify storefronts?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. Adnan builds sub-second composable Headless Shopify storefronts using Hydrogen, Oxygen edge hosting, Remix, and the GraphQL Storefront API, optimized for top Core Web Vitals, traditional search engines, and Generative Engine Optimization (GEO)."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Where is Adnan Khalil based and how can I contact him?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Adnan Khalil is based in Islamabad, Pakistan and is available for full-time remote roles and freelance projects worldwide. You can contact him via email at adnanmughal0342@gmail.com or call/WhatsApp at +92 342-1986817."
+              }
+            }
+          ]
+        }
       ]
-    }
-    </script>
-
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "Adnan Khalil – Full-Stack & Headless Shopify Developer",
-      "url": "https://adnaan-2.github.io",
-      "description": "Portfolio of Adnan Khalil – Full-Stack Software Engineer & Headless Shopify Developer from Islamabad, Pakistan",
-      "author": {
-        "@type": "Person",
-        "name": "Adnan Khalil"
-      }
     }
     </script>
 
@@ -106,15 +182,46 @@
   <body>
     <div id="root"></div>
     <noscript>
-      <h1>Adnan Khalil – Software Engineer</h1>
-      <p>Full Stack Developer specializing in Next.js, React, MERN Stack & TypeScript. Based in Islamabad, Pakistan.</p>
-      <p>Contact: adnanmughal0342@gmail.com</p>
-      <ul>
-        <li><a href="https://github.com/adnaan-2">GitHub</a></li>
-        <li><a href="https://linkedin.com/in/adnankhalil099/">LinkedIn</a></li>
-        <li><a href="https://www.instagram.com/a.d.n.aa.n/">Instagram</a></li>
-        <li><a href="https://www.facebook.com/adnan817/">Facebook</a></li>
-      </ul>
+      <header>
+        <h1>Adnan Khalil – Full-Stack Software Engineer & Headless Shopify Developer</h1>
+        <p>Full-Stack Software Engineer (BS SE, COMSATS University Islamabad) with 2+ years of production experience specializing in Headless Shopify (Hydrogen, Oxygen, Remix), Custom Store Development (Liquid, Storefront API), Scalable Web Applications (React, Next.js, Node.js, FastAPI), and Business AI Automations (n8n, Zapier).</p>
+      </header>
+
+      <section>
+        <h2>Core Solutions & Services</h2>
+        <ul>
+          <li><strong>Headless Shopify Development:</strong> Sub-second composable storefronts built with Shopify Hydrogen, Oxygen edge hosting, Remix, and GraphQL Storefront API.</li>
+          <li><strong>Custom E-Commerce & Store Dev:</strong> Tailored Liquid themes, custom checkout flows, Core Web Vitals tuning, and CRO optimization.</li>
+          <li><strong>Full-Stack Web Apps & MVPs:</strong> Scalable web applications, CRMs, and SaaS platforms built with React.js, Next.js, TypeScript, Node.js, and FastAPI.</li>
+          <li><strong>Business Automation & AI:</strong> Operational automation via n8n, Zapier, and custom AI API integrations (Gemini API, OpenAI API).</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Frequently Asked Questions & Entity Overview</h2>
+        <article>
+          <h3>Who is Adnan Khalil?</h3>
+          <p>Adnan Khalil is a Full-Stack Software Engineer (COMSATS University) with 2+ years of production experience specializing in Headless Shopify, custom e-commerce scaling, full-stack web applications, and business AI automation.</p>
+        </article>
+        <article>
+          <h3>What services does Adnan Khalil offer?</h3>
+          <p>Headless Shopify Storefront Engineering, Custom Shopify Theme & Storefront API Development, Full-Stack Web Apps & MVPs, Technical SEO, Generative Engine Optimization (GEO), and Business Process Automation.</p>
+        </article>
+        <article>
+          <h3>Where is Adnan Khalil based?</h3>
+          <p>Adnan Khalil is based in Islamabad, Pakistan and available for global full-time remote roles and freelance projects.</p>
+        </article>
+      </section>
+
+      <footer>
+        <p>Contact: <a href="mailto:adnanmughal0342@gmail.com">adnanmughal0342@gmail.com</a> | Phone: +92 342-1986817</p>
+        <ul>
+          <li><a href="https://github.com/adnaan-2">GitHub</a></li>
+          <li><a href="https://linkedin.com/in/adnankhalil099/">LinkedIn</a></li>
+          <li><a href="https://www.instagram.com/a.d.n.aa.n/">Instagram</a></li>
+          <li><a href="https://www.facebook.com/adnan817/">Facebook</a></li>
+        </ul>
+      </footer>
     </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>

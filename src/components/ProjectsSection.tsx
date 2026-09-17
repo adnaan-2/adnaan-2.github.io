@@ -70,7 +70,11 @@ const ProjectsSection = () => {
                   <div className="h-36 overflow-hidden sm:h-44">
                     <img 
                       src={project.image} 
-                      alt={project.title}
+                      alt={`Screenshot of ${project.title} project`}
+                      width="600"
+                      height="350"
+                      loading="lazy"
+                      decoding="async"
                       className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                   </div>

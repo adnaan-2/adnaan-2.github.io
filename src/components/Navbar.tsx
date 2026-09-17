@@ -20,6 +20,7 @@ import {
   LayoutGrid,
   Terminal,
   ShoppingBag,
+  HelpCircle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -33,6 +34,7 @@ const navLinks = [
   { label: "Projects", href: "#projects", icon: Code2, sectionId: "projects" },
   { label: "Skills", href: "#skills", icon: Users, sectionId: "skills" },
   { label: "Stats", href: "#stats", icon: LayoutGrid, sectionId: "stats" },
+  { label: "FAQ", href: "#faq", icon: HelpCircle, sectionId: "faq" },
   { label: "Contact", href: "#contact", icon: Mail, sectionId: "contact" },
 ];
 
