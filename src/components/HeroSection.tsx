@@ -81,7 +81,7 @@ const HeroSection = () => {
 
       <div className="relative z-10 mx-auto max-w-4xl text-center">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-          
+
 
           {/* Terminal card */}
           <div className="mx-auto mb-6 max-w-2xl overflow-hidden rounded-xl border border-border/50 bg-card/80 shadow-2xl shadow-primary/5 backdrop-blur-sm sm:mb-8">
@@ -96,7 +96,7 @@ const HeroSection = () => {
                 <span className="text-primary">const</span>{" "}
                 <span className="text-cyan-400 dark:text-cyan-300">engineer</span> = {"{"}
               </p>
-              <p className="ml-4 text-muted-foreground">
+              <p className="ml-4  text-muted-foreground">
                 name: <span className="text-green-400 dark:text-green-300">"Adnan Khalil"</span>,
               </p>
               <p className="ml-4 text-muted-foreground">
